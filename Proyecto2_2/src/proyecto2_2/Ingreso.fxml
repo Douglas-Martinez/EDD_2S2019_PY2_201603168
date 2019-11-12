@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="620.0" prefWidth="510.0" style="-fx-background-color: #f0f0f0;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="descarga.IngresoController">
+   <children>
+      <Pane layoutX="15.0" layoutY="16.0" prefHeight="590.0" prefWidth="480.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff; -fx-border-width: 5; -fx-border-radius: 5;">
+         <children>
+            <Label layoutX="56.0" layoutY="23.0" text="Inicio de Sesión" textAlignment="JUSTIFY">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="48.0" />
+               </font>
+            </Label>
+            <Pane layoutX="56.0" layoutY="102.0" prefHeight="386.0" prefWidth="368.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #000000;">
+               <children>
+                  <Label layoutX="36.0" layoutY="59.0" text="Usuario:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="36.0" layoutY="178.0" text="Password:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnIngresar" defaultButton="true" layoutX="118.0" layoutY="308.0" mnemonicParsing="false" onMouseClicked="#Ingresar" text="Ingresar">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="txtUsuario" layoutX="36.0" layoutY="99.0" prefHeight="44.0" prefWidth="296.0" />
+                  <PasswordField fx:id="txtPassword" layoutX="36.0" layoutY="222.0" prefHeight="44.0" prefWidth="296.0" />
+               </children>
+            </Pane>
+            <Label layoutX="90.0" layoutY="528.0" text="¿No te has registrado?">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnRegistrar" layoutX="284.0" layoutY="522.0" mnemonicParsing="false" onMouseClicked="#Registrar" text="Registrar">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

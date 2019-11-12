@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="620.0" prefWidth="510.0" style="-fx-background-color: #f0f0f0;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="descarga.RegistroController">
+   <children>
+      <Pane layoutX="15.0" layoutY="15.0" prefHeight="590.0" prefWidth="480.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff; -fx-border-width: 5; -fx-border-radius: 5;">
+         <children>
+            <Label layoutX="141.0" layoutY="23.0" text="Registro">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="48.0" />
+               </font>
+            </Label>
+            <Pane layoutX="46.0" layoutY="97.0" prefHeight="462.0" prefWidth="389.0" style="-fx-border-color: #000000; -fx-background-color: #f0f0f0;">
+               <children>
+                  <Label layoutX="24.0" layoutY="42.0" text="Usuario:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="157.0" text="Contraseña:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="272.0" text="Confirmar Contraseña:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnRegistrar" defaultButton="true" layoutX="132.0" layoutY="398.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="127.0" text="Confirmar">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="txtUsuario" layoutX="24.0" layoutY="82.0" prefHeight="40.0" prefWidth="340.0" />
+                  <TextField fx:id="txtPassword" layoutX="24.0" layoutY="201.0" prefHeight="40.0" prefWidth="340.0" />
+                  <TextField fx:id="txtConfirmar" layoutX="24.0" layoutY="311.0" prefHeight="40.0" prefWidth="340.0" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
