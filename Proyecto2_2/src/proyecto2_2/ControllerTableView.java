@@ -37,7 +37,6 @@ public class ControllerTableView implements Initializable {
     @FXML private TableColumn<FileInfo, ImageView> image;
     @FXML private TableColumn<FileInfo, String> date;
     @FXML private TableColumn<FileInfo, String> name;
-    @FXML private TableColumn<FileInfo, String> size;
     
     private Desktop desktop;
     public ObservableList<FileInfo> list;
@@ -46,7 +45,7 @@ public class ControllerTableView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Fx2 = new ClassTableView();
-        Fx2.setValues(tableview,image,date,name,size);
+        Fx2.setValues(tableview,image,date,name);
         if(Fx2.CurrDirFile==null) {
             Fx2.CurrDirFile = new File("./");
             Fx2.CurrDirStr  = Fx2.CurrDirFile.getAbsolutePath();
@@ -58,39 +57,37 @@ public class ControllerTableView implements Initializable {
             if(Fx2.CurrDirFile == null) {
                 Fx2.CurrDirFile = new File("./");
             }
-            
-            //if(Fx2.CurrDirName.equals("This PC")){  fl = File.listRoots();}
             { 
                 fl = Fx2.CurrDirFile.listFiles();
             }
 			
             FileInfo st[] = new FileInfo[fl.length];
             for(int i=0; i<fl.length;i++) {
-                String s1=null;
-                String s2=null;
-                String s3=null;
+                String s1 = null;
+                String s3 = null;
+                String s4 = null;
                 ImageView img = null;
                 try{
                     if(Fx2.IsDrive(fl[i])) {
                         img = new ImageView(Fx2.getIconImageFX(fl[i]));
                         s1 = fl[i].getAbsolutePath();
+                        s4 = "1";
                     } else {
                         img = new ImageView(Fx2.getIconImageFX(fl[i]));
                         s1 = fl[i].getName();
+                        s4 = "2";
                     }
-                    s2 = Fx2.calculateSize(fl[i]);
                     s3 = sdf.format(fl[i].lastModified());
                 } catch(Exception e) {
                     System.out.println("Exception detected in tableview strings: "+ e.getMessage());
                 }
-                st[i] = new FileInfo(img,s1,s2,s3);
+                st[i] = new FileInfo(img,s1,s3,s4);
             }
 
             list = FXCollections.observableArrayList(st);
 
             image.setCellValueFactory(new PropertyValueFactory<>("image"));
             name.setCellValueFactory(new PropertyValueFactory<>("name"));
-            size.setCellValueFactory(new PropertyValueFactory<>("size"));
             date.setCellValueFactory(new PropertyValueFactory<>("date"));
             tableview.setItems(list);
         }
@@ -98,7 +95,9 @@ public class ControllerTableView implements Initializable {
 
     @FXML
     private void handleTableMouseClicked(MouseEvent mouseEvent) {
-        if(mouseEvent.getClickCount() == 2) {
+        if(mouseEvent.getClickCount() == 1) {
+            
+        } else if(mouseEvent.getClickCount() == 2) {
             String str = tableview.getSelectionModel().getSelectedItem().getName();
             String s = Fx2.CurrDirStr + "\\" + str;
             System.out.println(s);
@@ -112,13 +111,6 @@ public class ControllerTableView implements Initializable {
                     Fx2.CreateTableView();
                 } catch(Exception e) {  
                     System.out.println(e.getMessage());
-                }
-            } else if(file.isFile()) {
-                desktop = Desktop.getDesktop();
-                try { 
-                    desktop.open(file);
-                } catch(IOException e) { 
-                    System.out.println(e.getMessage());				
                 }
             }
         }

@@ -8,6 +8,9 @@ package Estructuras;
 import Nodos.NodoFila;
 import Nodos.NodoMatriz;
 import Nodos.NodoColumna;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -22,12 +25,14 @@ public class MatrizDispersa {
         this.propietario = "";
         this.padres = new ListaFilas();
         this.hijos = new ListaColumnas();
+        insertar("/", "/");
     }
     
     public MatrizDispersa(String p) {
         this.propietario = p;
         this.padres = new ListaFilas();
         this.hijos = new ListaColumnas();
+        insertar("/", "/");
     }
     
     public NodoMatriz buscar(String p, String h) {
@@ -47,16 +52,22 @@ public class MatrizDispersa {
         return null;
     }
     
+    private void insFC(String p, String h) {
+        this.padres.insertar(p);
+        this.padres.insertar(h);
+        this.hijos.insertar(p);
+        this.hijos.insertar(h);
+    }
+    
     public void insertar(String p, String h) {
         if(buscar(p,h) == null) {
+            insFC(p, h);
             NodoMatriz nuevo = new NodoMatriz(p, h, this.propietario);
             NodoFila auxF = this.padres.buscar(p);
             NodoColumna auxC = this.hijos.buscar(h);
             
             //Asignar en filas
-            if(auxF == null) {
-                auxF = new NodoFila(p);
-                this.padres.insertar(p);
+            if(auxF.der == null) {
                 auxF = this.padres.buscar(p);
                 auxF.der = nuevo;
             } else {
@@ -74,6 +85,7 @@ public class MatrizDispersa {
                             auxM.derecha = nuevo;
                             break;
                         }
+                        auxM = auxM.derecha;
                     }
                     auxM.derecha = nuevo;
                     nuevo.izquierda = auxM;
@@ -81,9 +93,7 @@ public class MatrizDispersa {
             }
             
             //Asignar en columnas
-            if(auxC == null) {
-                auxC = new NodoColumna(h);
-                this.hijos.insertar(h);
+            if(auxC.abajo == null) {
                 auxC = this.hijos.buscar(h);
                 auxC.abajo = nuevo;
             } else {
@@ -110,5 +120,189 @@ public class MatrizDispersa {
         } else {
             System.out.println("La carpeta con esa ruta ya existe");
         }
+    }
+    
+    public void graficar() {
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/matriz.dot")));
+            escribir.println("digraph matriz {\n");
+            escribir.println("\trankdir = TB;\n");
+            escribir.println("\tnode[shape = rectangle];\n");
+            escribir.println("\tgraph[nodesep = 0.5];\n");
+            
+            escribir.println("\t0001000[label=\"Matriz\", style=\"filled\", fontcolor=\"white\", color=\"black\"];\n");
+            
+            //Nodos en Columna
+            NodoColumna auxC = this.hijos.inicio;
+            while(auxC != null) {
+                escribir.println("\t" + auxC.hashCode()+"[label=\""+auxC.nombre+"\", style=\"solid\"];");
+                auxC = auxC.sig;
+            }
+            //Nodos en Fila
+            escribir.println("");
+            NodoFila auxF = this.padres.inicio;
+            while(auxF != null) {
+                escribir.println("\t" + auxF.hashCode()+"[label=\""+auxF.nombre+"\", style=\"solid\"];");
+                auxF = auxF.sig;
+            }
+            //Nodos internos
+            escribir.println("");
+            auxF = this.padres.inicio;
+            while(auxF != null) {
+                NodoMatriz auxM = auxF.der;
+                while(auxM != null) {
+                    if(auxM.padre.equals("/") && auxM.hijo.equals("/")) {
+                        escribir.println("\t" + auxM.hashCode()+"[label=\"/\", style=\"filled\"];");
+                    } else if(auxM.padre.equals("/")) {
+                        escribir.println("\t" + auxM.hashCode()+"[label=\"/"+auxM.hijo+"\", style=\"filled\"];");
+                    } else {
+                        escribir.println("\t" + auxM.hashCode()+"[label=\""+auxM.padre+"/"+auxM.hijo+"\", style=\"filled\"];");
+                    }
+                    auxM = auxM.derecha;
+                }
+                auxF = auxF.sig;
+            }
+            
+            //Conexion nodos columna
+            escribir.println("");
+            auxC = this.hijos.inicio;
+            if(auxC != null) {
+                escribir.println("\t" + "0001000 -> " + auxC.hashCode() + "[dir=both];");
+                while(auxC.sig != null) {
+                    escribir.println("\t" + auxC.hashCode() + " -> " + auxC.sig.hashCode() + "[dir=both];");
+                    auxC = auxC.sig;
+                }
+            }
+            //Conexion nodos fila
+            escribir.println("");
+            auxF = this.padres.inicio;
+            if(auxF != null) {
+                escribir.println("\t" + "0001000 -> " + auxF.hashCode() + "[dir=both];");
+                while(auxF.sig != null) {
+                    escribir.println("\t" + auxF.hashCode() + " -> " + auxF.sig.hashCode() + "[dir=both];");
+                    auxF = auxF.sig;
+                }
+            }
+            
+            //Conexion vertical
+            escribir.println("");
+            auxC = this.hijos.inicio;
+            while(auxC != null) {
+                NodoMatriz auxM = auxC.abajo;
+                if(auxC.abajo != null) {
+                    escribir.println("\t" + auxC.hashCode() + " -> " + auxC.abajo.hashCode() + "[dir=both];");
+                    while(auxM.abajo != null) {
+                        escribir.println("\t" + auxM.hashCode() + " -> " + auxM.abajo.hashCode() + "[dir=both];");
+                        auxM = auxM.abajo;
+                    }
+                }
+                auxC = auxC.sig;
+            }
+            
+            
+            //Conexion horizontal
+            escribir.println("");
+            auxF = this.padres.inicio;
+            while(auxF != null) {
+                NodoMatriz auxM = auxF.der;
+                if(auxF.der != null) {
+                    escribir.println("\t" + auxF.hashCode() + " -> " + auxF.der.hashCode() + "[constraint=false, dir=both];");
+                    //escribir.println("\t" + auxF.hashCode() + " -> " + auxF.der.hashCode() + "[dir=both];");
+                    while(auxM.derecha != null) {
+                        escribir.println("\t" + auxM.hashCode() + " -> " + auxM.derecha.hashCode() + "[contraint=false, dir=both];");
+                        //escribir.println("\t" + auxM.hashCode() + " -> " + auxM.derecha.hashCode() + "[dir=both];");
+                        auxM = auxM.derecha;
+                    }
+                }
+                auxF = auxF.sig;
+            }
+            
+            //rank same horizontal
+            auxC = this.hijos.inicio;
+            if(auxC != null) {
+                escribir.print("\t" + "{ rank=same; 0001000; ");
+                while(auxC != null) {
+                    escribir.print(auxC.hashCode() + "; ");
+                    auxC = auxC.sig;
+                }
+            }
+            escribir.println(" }");
+            
+            auxF = this.padres.inicio;
+            if(auxF != null) {
+                while(auxF != null) {
+                    escribir.print("\t" + "{ rank=same; " + auxF.hashCode() + "; ");
+                    if(auxF.der != null) {
+                        NodoMatriz auxM = auxF.der;
+                        while(auxM != null) {
+                            escribir.print(auxM.hashCode() + "; ");
+                            auxM = auxM.derecha;
+                        }
+                    }
+                    escribir.println("}");
+                    auxF = auxF.sig;
+                }
+            }
+            escribir.print("\tlabel = \"Matriz de Archivos\"");
+            escribir.println("}");
+            escribir.close();
+            Runtime.getRuntime().exec("dot src/Reportes/matriz.dot -o src/Reportes/matriz.png -Tpng");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void graficarGrafo() {
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/grafo.dot")));
+            escribir.println("digraph grafo {");
+            if(padres == null) {
+                escribir.println("\t\"Grafo Vacio\"");
+            } else {
+                NodoFila auxF = this.padres.inicio;
+                while(auxF != null) {
+                    escribir.println("\t\""+auxF.nombre+"\"[label=\""+auxF.nombre+"\"];");
+                    auxF = auxF.sig;
+                }
+                recorridoGrafo(padres,escribir);
+            }
+            escribir.println("\tlabel = \"Grafo de Carpetas\";");
+            escribir.println("}");
+            escribir.close();
+            Runtime.getRuntime().exec("dot src/Reportes/grafo.dot -o src/Reportes/grafo.png -Tpng -Gcharset=utf8");
+        } catch(Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    private void recorridoGrafo(ListaFilas r, PrintWriter escribir) {
+        NodoFila auxF = r.inicio;
+        while(auxF != null) {
+            NodoMatriz auxM = auxF.der;
+            while(auxM != null) {
+                if(!auxM.padre.equals("/") && !auxM.hijo.equals("/")) {
+                    escribir.println("\t\""+auxF.nombre + "\"->\"" + auxM.hijo + "\";");
+                } else if(auxM.padre.equals("/") && !auxM.hijo.equals("/")) {
+                    escribir.println("\t\"/\"->\"" + auxM.hijo + "\";");
+                }
+                auxM = auxM.derecha;
+            }
+            escribir.println("");
+            auxF = auxF.sig;
+        }
+    }
+    
+    public int contarCarpetas(String np) {
+        int cont = 0;
+        NodoFila aux = this.padres.buscar(np);
+        if(aux != null) {
+            NodoMatriz auxM = aux.der;
+            while(auxM != null) {
+                cont++;
+            }
+        }
+        return cont;
     }
 }

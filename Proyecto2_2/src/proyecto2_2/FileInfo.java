@@ -15,15 +15,15 @@ import javafx.scene.image.ImageView;
 public class FileInfo {
     private ImageView image;
     private SimpleStringProperty name;
-    private SimpleStringProperty size;
     private SimpleStringProperty date;
+    private String tipo;
 
-    public FileInfo(ImageView image, String name, String size, String date){
+    public FileInfo(ImageView image, String name, String date, String t){
         super();
         this.image = image;
         this.name = new SimpleStringProperty(name);
-        this.size = new SimpleStringProperty(size);
         this.date = new SimpleStringProperty(date);
+        this.tipo = t;
     }
 
     /**
@@ -45,13 +45,6 @@ public class FileInfo {
      */
     public String getName(){
         return name.get();
-    }
-    
-    /**
-     * @return the size
-     */
-    public String getSize(){
-        return size.get();
     }
     
     /**

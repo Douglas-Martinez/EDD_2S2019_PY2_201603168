@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Nodos.NodoFila;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -26,11 +27,10 @@ public class ClassTableView extends FileExplorerFx {
     ClassTableView(){}
 	
     @Override
-    public void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image,TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name,TableColumn<FileInfo, String> size){
+    public void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image,TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name){
         this.tableview = tableview;
         this.date = date;
         this.name=name;
-        this.size = size;
         this.image=image;
     }
 
@@ -51,32 +51,32 @@ public class ClassTableView extends FileExplorerFx {
 		
         FileInfo st[] = new FileInfo[fl.length];
         for(int i=0; i<fl.length;i++){
-            String s1=null;
-            String s2=null;
-            String s3=null;
+            String s1 = null;
+            String s3 = null;
+            String s4 = null;
             ImageView img = null;
             
             try {
                 if(IsDrive(fl[i])) {
                     img = new ImageView(getIconImageFX(fl[i]));
                     s1 = fl[i].getAbsolutePath();
+                    s4 = "1";
                 } else {
                     img = new ImageView(getIconImageFX(fl[i]));
                     s1 = fl[i].getName();
+                    s4 = "2";
                 }
-                s2 = calculateSize(fl[i]);
                 s3 = sdf.format(fl[i].lastModified());
             } catch(Exception e) {
                 System.out.println("Exception detected in tableview strings: " + e.getMessage());
             }
-            st[i] = new FileInfo(img,s1,s2,s3);
+            st[i] = new FileInfo(img,s1,s3,s4);
         }
 
         list = FXCollections.observableArrayList(st);
 
         image.setCellValueFactory(new PropertyValueFactory<>("image"));
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        size.setCellValueFactory(new PropertyValueFactory<>("size"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         tableview.setItems(list);
     }
@@ -86,6 +86,11 @@ public class ClassTableView extends FileExplorerFx {
     
     @Override
     public TreeItem<String>[] TreeCreate(File dir) {
+        return null;
+    }
+    
+    @Override
+    public TreeItem<String>[] TreeCreate(NodoFila nf) {
         return null;
     }
     

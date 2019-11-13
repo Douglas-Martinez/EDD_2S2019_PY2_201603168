@@ -16,10 +16,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
@@ -40,7 +36,6 @@ public abstract class FileExplorerFx implements FileExplorer{
     TableColumn<FileInfo, ImageView> image;
     TableColumn<FileInfo, String> date;
     TableColumn<FileInfo, String> name;
-    TableColumn<FileInfo, String> size;
 
     FileExplorerFx(){}
     
@@ -51,43 +46,6 @@ public abstract class FileExplorerFx implements FileExplorer{
         BufferedImage bimg = (BufferedImage) img;
         Image imgfx = toFXImage(bimg,null);
         return imgfx;
-    }
-    
-    @Override
-    public String calculateSize(File f){
-        String s;
-        long sizeInByte=0;
-        Path path;
-        
-        if(IsDrive(f)){
-            return Long.toString(f.getTotalSpace()/(1024*1024*1024))+"GB";
-        }
-
-        path = Paths.get(f.toURI());
-        try {
-            sizeInByte = Files.size(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        if(sizeInByte<(1024)) { 
-            s = Long.toString(sizeInByte)+"B";
-            return s;
-        } else if(sizeInByte>=(1024) && sizeInByte<(1024*1024)) {
-            long sizeInKb = sizeInByte/1024;
-            s = Long.toString(sizeInKb)+"KB"; 
-            return s; 
-        } else if(sizeInByte>=(1024*1024) && sizeInByte<(1024*1024*1024)) {
-            long sizeInMb = sizeInByte/(1024*1024);
-            s = Long.toString(sizeInMb)+"MB";
-            return s;
-        } else if(sizeInByte>=(1024*1024*1024)) {
-            long sizeInGb = sizeInByte/(1024*1024*1024);
-            s = Long.toString(sizeInGb)+"GB";
-            return s; 
-        }
-
-        return null;
     }
     
     @Override

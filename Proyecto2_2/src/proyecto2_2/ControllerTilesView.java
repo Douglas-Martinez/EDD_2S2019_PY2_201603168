@@ -31,5 +31,4 @@ public class ControllerTilesView implements Initializable {
         Fx3.tilePane = tilePane;
         Fx3.CreateTiles();
     }
-
 }

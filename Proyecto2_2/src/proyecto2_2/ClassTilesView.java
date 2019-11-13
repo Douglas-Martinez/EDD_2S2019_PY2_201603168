@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Nodos.NodoFila;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -74,11 +75,9 @@ public class ClassTilesView extends FileExplorerFx{
                     }
                 }
             });
-
             TilePane.setAlignment(vbox, Pos.BOTTOM_LEFT);
             tilePane.getChildren().add(vbox);
         }
-
     }
 
     @Override
@@ -87,16 +86,20 @@ public class ClassTilesView extends FileExplorerFx{
     }
     
     @Override
-    public String FindAbsolutePath(TreeItem<String> item, String s)
-    {return null;}
+    public TreeItem<String>[] TreeCreate(NodoFila nf) { 
+        return null;
+    }
+    
+    @Override
+    public String FindAbsolutePath(TreeItem<String> item, String s) {
+        return null;
+    }
     
     @Override
     public void CreateTreeView(TreeView<String> treeview) {}
     
     @Override
-    public void CreateTableView
-    (TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name, TableColumn<FileInfo, String> size)
-    {}
+    public void CreateTableView (TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name, TableColumn<FileInfo, String> size) {}
     
     @Override
     public void CreateTableView() {}
@@ -108,5 +111,5 @@ public class ClassTilesView extends FileExplorerFx{
     public void Initiate() {}
     
     @Override
-    public void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name, TableColumn<FileInfo, String> size) {}
+    public void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name) {}
 }

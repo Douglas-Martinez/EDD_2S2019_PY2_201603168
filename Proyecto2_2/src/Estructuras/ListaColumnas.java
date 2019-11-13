@@ -30,24 +30,27 @@ public class ListaColumnas {
     }
     
     public void insertar(String s) {
-        NodoColumna nuevo = new NodoColumna(s);
-        if(this.inicio == null) {
-            this.inicio = nuevo;
-        } else if(nuevo.nombre.equals(this.inicio.nombre)) {
-            nuevo.sig = this.inicio;
-            this.inicio = nuevo;
-        } else {
-            NodoColumna actual = this.inicio;
-            NodoColumna anterior = this.inicio;
-            while((actual.sig != null) && (nuevo.nombre.compareTo(actual.nombre)) > 0) {
-                anterior = actual;
-                actual = actual.sig;
+        NodoColumna tmp = buscar(s);
+        if(tmp == null) {
+            NodoColumna nuevo = new NodoColumna(s);
+            if(this.inicio == null) {
+                this.inicio = nuevo;
+            } else if(nuevo.nombre.compareTo(this.inicio.nombre) < 0) {
+                nuevo.sig = this.inicio;
+                this.inicio = nuevo;
+            } else {
+                NodoColumna actual = this.inicio;
+                NodoColumna anterior = this.inicio;
+                while((actual.sig != null) && (nuevo.nombre.compareTo(actual.nombre)) > 0) {
+                    anterior = actual;
+                    actual = actual.sig;
+                }
+                if(nuevo.nombre.compareTo(actual.nombre) > 0) {
+                    anterior = actual;
+                }
+                nuevo.sig = anterior.sig;
+                anterior.sig = nuevo;
             }
-            if(nuevo.nombre.compareTo(actual.nombre) > 0) {
-                anterior = actual;
-            }
-            nuevo.sig = anterior.sig;
-            anterior.sig = nuevo;
         }
     }
 }

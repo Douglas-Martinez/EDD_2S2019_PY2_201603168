@@ -6,6 +6,9 @@
 package Estructuras;
 
 import Nodos.NodoPila;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -50,6 +53,45 @@ public class Pila {
             this.tope = this.tope.getSig();
         }
         this.tope = null;
+    }
+    
+    public void graficar() {
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/log.dot")));
+            escribir.println("digraph pila{ ");
+            escribir.println("\tnode[shape=record];\n");
+            escribir.println("\tgraph[pencolor=transparent];\n");
+            escribir.println("\trankdir=TB;\n");
+            
+            NodoPila aux = this.tope;
+            if(aux == null) {
+                escribir.println("\t\"Pila Vacia\"\n");
+            } else {
+                while(aux != null) {
+                    escribir.println("\t"+aux.hashCode()+"[label=\"Operacion: "+aux.getOperacion()+"\\nUsuario: "+aux.getUsuario()+"\\nTimeStamp: "+aux.getFecha()+"::"+aux.getHora()+"\"];\n");
+                    aux = aux.getSig();
+                }
+                
+                escribir.println("");
+                
+                aux = this.tope;
+                escribir.print("\t"+aux.hashCode());
+                aux = aux.getSig();
+                while(aux != null) {
+                    escribir.print("->" + aux.hashCode());
+                    aux = aux.getSig();
+                }
+                escribir.println(";\n");
+            }
+            
+            escribir.print("\tlabel = \"Log - Bitácora\"");
+            escribir.println("}");
+            escribir.close();
+            Runtime.getRuntime().exec("dot src/Reportes/log.dot -o src/Reportes/log.png -Tpng");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void Recorrer() {

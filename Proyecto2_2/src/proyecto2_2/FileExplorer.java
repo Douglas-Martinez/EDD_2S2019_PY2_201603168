@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Nodos.NodoFila;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
@@ -19,10 +20,9 @@ import java.io.File;
  * @author Douglas
  */
 public interface FileExplorer {
-    
     Image getIconImageFX(File f);
+    TreeItem<String>[] TreeCreate(NodoFila nf);
     TreeItem<String>[] TreeCreate(File dir);
-    String calculateSize(File f);
     String FindAbsolutePath(TreeItem<String> item, String s);
     boolean IsDrive(File f);
     int FilesHiddensCount(File dir);
@@ -32,6 +32,6 @@ public interface FileExplorer {
     void CreateTilesView();
     void setLabelTxt();
     void Initiate();
-    void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name, TableColumn<FileInfo, String> size);
+    void setValues(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name);
     void CreateTiles();
 }

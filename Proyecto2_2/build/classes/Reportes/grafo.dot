@@ -1,0 +1,23 @@
+digraph grafo {
+	"/"[label="/"];
+	"Dana"[label="Dana"];
+	"Imagenes"[label="Imagenes"];
+	"Imagenes2"[label="Imagenes2"];
+	"Lol"[label="Lol"];
+	"Packs"[label="Packs"];
+	"Proyecto"[label="Proyecto"];
+	"/"->"Lol";
+	"/"->"Proyecto";
+
+
+
+
+	"Lol"->"Imagenes";
+	"Lol"->"Imagenes2";
+	"Lol"->"Packs";
+
+	"Packs"->"Dana";
+
+
+	label = "Grafo de Carpetas";
+}

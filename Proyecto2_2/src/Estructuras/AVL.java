@@ -6,6 +6,9 @@
 package Estructuras;
 
 import Nodos.NodoAVL;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -73,19 +76,19 @@ public class AVL {
        return y;
    }
    
-   public void insertar(String n, String e, String c, String p) {
-       this.root = insertar(this.root,n,e,c,p);
+   public void insertar(String n, String c, String p) {
+       this.root = insertar(this.root,n,c,p);
    }
    
-   private NodoAVL insertar(NodoAVL raiz, String n, String e, String c, String p) {
+   private NodoAVL insertar(NodoAVL raiz, String n, String c, String p) {
        if(raiz ==  null) {
-           return (new NodoAVL(n,e,c,p));
+           return (new NodoAVL(n,c,p));
        }
        
        if(n.compareTo(raiz.nombre) < 0) {
-           raiz.left = insertar(raiz.left,n,e,c,p);
+           raiz.left = insertar(raiz.left,n,c,p);
        } else if(n.compareTo(raiz.nombre) > 0) {
-           raiz.right = insertar(raiz.right,n,e,c,p);
+           raiz.right = insertar(raiz.right,n,c,p);
        } else {
            System.out.println("Nodo Ya Existe");
            return raiz;
@@ -182,6 +185,52 @@ public class AVL {
        }
        
        return root;
+   }
+   
+   public void graficar() {
+       PrintWriter escribir;
+       try {
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/avl.dot")));
+            escribir.println("digraph avl {\n");
+            escribir.println("\tgraph[splines=ortho, nodesep=0.5];\n");
+            escribir.println("\tnode[shape=record, style=filled, fillcolor=seashell2];\n");
+            
+            if(this.root == null) {
+                escribir.println("\t\"Arbol Vacio\"\n");
+            } else {
+                imprimir(this.root,escribir);
+                escribir.println("\n\n");
+                conectar(this.root,escribir);
+            }
+            escribir.print("\tlabel = \"AVL de Archivos\"");
+            escribir.println("}");
+            escribir.close();
+            Runtime.getRuntime().exec("dot src/Reportes/avl.dot -o src/Reportes/avl.png -Tpng");
+       } catch(Exception e) {
+           System.out.println(e.toString());
+       }
+   }
+   
+   public void imprimir(NodoAVL r, PrintWriter escribir) {
+       if(r != null) {
+            escribir.print("\t"+r.hashCode()+"[label=\"<C0>|Nombre: "+r.nombre+"\\nContenido: "+r.contenido+"\\nPropietario: "+r.propietario+"\\nTimeStmp: "+r.timestamp+"\\nAltura: "+r.h+"\\nFE: "+r.fe+"|<C1>\"];\n");
+            imprimir(r.left,escribir);
+            imprimir(r.right,escribir);
+       }
+   }
+   
+   public void conectar(NodoAVL r, PrintWriter escribir) {
+       if(r != null) {
+           if(r.left != null) {
+               escribir.println(r.hashCode()+":C0->"+r.left.hashCode()+";\n");
+           }
+           if(r.right != null) {
+               escribir.println(r.hashCode()+":C1->"+r.right.hashCode()+";\n");
+           }
+           
+           conectar(r.left,escribir);
+           conectar(r.right,escribir);
+       }
    }
    
    public void PreOrder(NodoAVL n) {

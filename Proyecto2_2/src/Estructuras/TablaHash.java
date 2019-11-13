@@ -47,12 +47,19 @@ public class TablaHash {
         }
         
         int p = k % this.fin;
+        int rep = 1;
+        int aux = 1;
         while(this.tabla[p] != null) {
-            k = k*k;
-            p = k % this.fin;
+            if(rep > 5) {
+                p++;
+                rep = 1;
+            }
+            p = p + rep*rep; 
             while(p > this.fin - 1) {
                 p -= this.fin;
             }
+            rep++;
+            aux++;
         }
         return p;
     }
@@ -64,16 +71,21 @@ public class TablaHash {
         }
         
         int p = k % this.fin;
+        int rep = 1;
         while(this.tabla[p] != null) {
+            if(rep > 5) {
+                p++;
+                rep = 1;
+            }
             if(this.tabla[p].usuario.equalsIgnoreCase(clave)) {
                 break;
             } else {
-                k = k*k;
-                p = k % this.fin;
+                p = p + rep*rep;
                 while(p > this.fin - 1) {
                     p -= this.fin;
                 }
             }
+            rep++;
         }
         if(this.tabla[p] == null){
             p = -1;
@@ -119,7 +131,7 @@ public class TablaHash {
             this.tabla[pos] = nuevoU;
             this.nElementos++;
             this.factor = ((double)this.nElementos / (double)this.fin);
-            if(this.factor > 0.75) {
+            if(this.factor >= 0.75) {
                 int nuevo = obtenerPrimo(this.fin);
                 reHashing(nuevo);
             }
@@ -145,7 +157,7 @@ public class TablaHash {
     public void graficar() {
         PrintWriter escribir;
         try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("tablaHash.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/tablaHash.dot")));
             escribir.println("digraph tablaHash{ \n");
             escribir.println("\ttbl [\n");
             escribir.println("\t\tshape=plaintext");
@@ -186,7 +198,7 @@ public class TablaHash {
             escribir.println("}");
             escribir.close();
             
-            Runtime.getRuntime().exec("dot tablaHash.dot -o tablaHash.png -Tpng");
+            Runtime.getRuntime().exec("dot src/Reportes/tablaHash.dot -o src/Reportes/tablaHash.png -Tpng");
             
         } catch (Exception e) {
             System.err.println(e.toString());

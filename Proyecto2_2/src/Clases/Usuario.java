@@ -47,7 +47,6 @@ public class Usuario {
         }
         this.timestamp = timeStamp();
         this.matrix = new MatrizDispersa(n);
-        this.matrix.insertar("/", "/");
     }
     
     private byte[] sha256(String p) throws NoSuchAlgorithmException {

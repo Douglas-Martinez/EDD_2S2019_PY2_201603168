@@ -1,0 +1,29 @@
+digraph avl {
+
+	graph[splines=ortho, nodesep=0.5];
+
+	node[shape=record, style=filled, fillcolor=seashell2];
+
+	1289696681[label="<C0>|Nombre: caca.kk\nContenido: Cacaroto\nPropietario: Goku\nTimeStmp: 12-11-2019::23:46:31\nAltura: 3\nFE: 0|<C1>"];
+	1285044316[label="<C0>|Nombre: alv.tuputamadre\nContenido: Contenido2\nPropietario: YOx2\nTimeStmp: 12-11-2019::23:46:31\nAltura: 2\nFE: 0|<C1>"];
+	1607460018[label="<C0>|Nombre: alv.tugefa\nContenido: Contenido1\nPropietario: YO\nTimeStmp: 12-11-2019::23:46:31\nAltura: 1\nFE: 0|<C1>"];
+	1811075214[label="<C0>|Nombre: boynas\nContenido: Contenido3\nPropietario: Pito\nTimeStmp: 12-11-2019::23:46:31\nAltura: 1\nFE: 0|<C1>"];
+	1588970020[label="<C0>|Nombre: julio.txt\nContenido: pack\nPropietario: Tu\nTimeStmp: 12-11-2019::23:46:31\nAltura: 2\nFE: 0|<C1>"];
+	1407343478[label="<C0>|Nombre: date.puto\nContenido: loco\nPropietario: Crazy\nTimeStmp: 12-11-2019::23:46:31\nAltura: 1\nFE: 0|<C1>"];
+	1940447180[label="<C0>|Nombre: putas.harry\nContenido: putas\nPropietario: peluca\nTimeStmp: 12-11-2019::23:46:31\nAltura: 1\nFE: 0|<C1>"];
+
+
+
+1289696681:C0->1285044316;
+
+1289696681:C1->1588970020;
+
+1285044316:C0->1607460018;
+
+1285044316:C1->1811075214;
+
+1588970020:C0->1407343478;
+
+1588970020:C1->1940447180;
+
+	label = "AVL de Archivos"}
