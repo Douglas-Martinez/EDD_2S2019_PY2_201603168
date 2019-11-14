@@ -17,7 +17,7 @@ public class NodoMatriz {
     public String padre;
     public String hijo;
     public String propietario;
-    String fecha;
+    public String fecha;
     public AVL archivos;
     //String nombre;
     public NodoMatriz arriba;

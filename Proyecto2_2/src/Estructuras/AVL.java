@@ -9,6 +9,7 @@ import Nodos.NodoAVL;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 /**
  *
@@ -16,9 +17,14 @@ import java.io.PrintWriter;
  */
 public class AVL {
     public NodoAVL root;
+    public int tam;
+    //public NodoAVL[] lista;
+    public LinkedList<NodoAVL> lista;
     
    public AVL() {
        this.root = null;
+       this.tam = 0;
+       this.lista = new LinkedList<>();
    }
    
    public int getHeight(NodoAVL n) {
@@ -78,6 +84,7 @@ public class AVL {
    
    public void insertar(String n, String c, String p) {
        this.root = insertar(this.root,n,c,p);
+       this.tam++;
    }
    
    private NodoAVL insertar(NodoAVL raiz, String n, String c, String p) {
@@ -127,6 +134,7 @@ public class AVL {
    
    public void eliminar(String n) {
        this.root = eliminar(this.root, n);
+       this.tam--;
    }
    
    private NodoAVL eliminar(NodoAVL root, String n) {
@@ -241,11 +249,24 @@ public class AVL {
        }
    }
    
+   public void linealizar() {
+       this.lista = new LinkedList<>();
+       listInOrder(root);
+   }
+   
    public void InOrder(NodoAVL n) {
        if(n != null) {
-           PreOrder(n.left);
+           InOrder(n.left);
            System.out.print(n.nombre + " ");
-           PreOrder(n.right);
+           InOrder(n.right);
+       }
+   }
+   
+   public void listInOrder(NodoAVL n) {
+       if(n != null) {
+           listInOrder(n.left);
+           this.lista.add(n);
+           listInOrder(n.right);
        }
    }
 }

@@ -5,6 +5,9 @@
  */
 package proyecto2_2;
 
+import Nodos.NodoAVL;
+import Nodos.NodoFila;
+import Nodos.NodoMatriz;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import static proyecto2_2.FileExplorerFx.CurrDirName;
+import static proyecto2_2.Proyecto2_2.actual;
 
 /**
  * FXML Controller class
@@ -39,13 +44,15 @@ public class ControllerTableView implements Initializable {
     @FXML private TableColumn<FileInfo, String> name;
     
     private Desktop desktop;
-    public ObservableList<FileInfo> list;
+    //public ObservableList<FileInfo> list;
+    public ObservableList<FileInfo> lista;
     public static FileExplorerFx Fx2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Fx2 = new ClassTableView();
         Fx2.setValues(tableview,image,date,name);
+                
         if(Fx2.CurrDirFile==null) {
             Fx2.CurrDirFile = new File("./");
             Fx2.CurrDirStr  = Fx2.CurrDirFile.getAbsolutePath();

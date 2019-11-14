@@ -26,6 +26,7 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
  */
 public abstract class FileExplorerFx implements FileExplorer{
     static File CurrDirFile;
+    //static String CurrDirFile;
     static String CurrDirStr;
     static Label lbl;
     static String CurrDirName;

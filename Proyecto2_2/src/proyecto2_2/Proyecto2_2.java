@@ -28,6 +28,9 @@ public class Proyecto2_2 extends Application {
     public static TablaHash usuarios = new TablaHash();
     public static Pila log = new Pila();
     public static Usuario actual;
+    
+    public static String carpeta;
+    public static String padre;
     public static String CarpetaActual;
     public static String ArchivoActual;
     public static NodoAVL selA;
@@ -48,7 +51,7 @@ public class Proyecto2_2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        usuarios.insertar("Admin", "Admin");
+        //usuarios.insertar("Admin", "Admin");
         /*
         MatrizDispersa sm = new MatrizDispersa("Yo");
         sm.insertar("/", "Lol");
@@ -87,6 +90,19 @@ public class Proyecto2_2 extends Application {
         log.graficar();
         */
         usuarios.insertar("Lolazo", "12345678");
+        usuarios.buscar("Lolazo").matrix.insertar("/", "Proyectos");
+        usuarios.buscar("Lolazo").matrix.insertar("/", "Reportes");
+        usuarios.buscar("Lolazo").matrix.insertar("Proyectos", "EDD");
+        
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tugefa","Contenido1","Lolazo");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tuputamadre","Contenido2","YOx2");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("boynas","Contenido3","Pito");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("caca.kk","Cacaroto","Goku");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("julio.txt","pack","Tu");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("putas.harry","putas","peluca");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("date.puto","loco","Crazy");
+        //usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.listInOrder(usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.root, 0);
+        //System.out.println("");
         /*
         usuarios.insertar("Noobmaster69", "ElThortas");
         usuarios.insertar("Ana Morales", "Anabanana");

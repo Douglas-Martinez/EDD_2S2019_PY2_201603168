@@ -88,7 +88,7 @@ public class ClassTreeView extends FileExplorerFx {
 
     @Override
     public String FindAbsolutePath(TreeItem<String> item, String s) {
-        if((item.getParent() == null) || (item.getParent().getValue().equals("/"))) {
+        if((item.getParent() == null)||(item.getParent().getValue().equals("/"))) {
             return s;
         } else {
             String dir = item.getParent().getValue();
@@ -110,14 +110,17 @@ public class ClassTreeView extends FileExplorerFx {
     public void CreateTreeView(TreeView<String> treeview) {
         NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar("/");
         int cont = nf.Contar();
+        if(cont > 0) {
             NodoFila[] fnf = new NodoFila[cont];
-        NodoMatriz auxM = nf.der;
-        int aux = 0;
-        while(auxM != null) {
-            fnf[aux] = Proyecto2_2.actual.matrix.padres.buscar(auxM.hijo);
-            aux++;
-            auxM = auxM.derecha;
-        }
+            NodoMatriz auxM = nf.der;
+            int aux = 0;
+            while(auxM != null) {
+                if(!auxM.hijo.equals("/")) {
+                    fnf[aux] = Proyecto2_2.actual.matrix.padres.buscar(auxM.hijo);
+                    aux++;
+                }
+                auxM = auxM.derecha;
+            }
             TreeItem<String> raiz = new TreeItem<>("/", new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
             TreeItem<String>[] sig = new TreeItem[cont];
             for(int j = 0; j < fnf.length; j++) {
@@ -131,6 +134,10 @@ public class ClassTreeView extends FileExplorerFx {
                 }
             }
             treeview.setRoot(raiz);
+        } else {
+            TreeItem<String> raiz = new TreeItem<>("/", new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
+            treeview.setRoot(raiz);
+        }
         /*
         File[] sysroots = File.listRoots();
         TreeItem<String> ThisPc = new TreeItem<>("This PC", new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/pc.png"))));

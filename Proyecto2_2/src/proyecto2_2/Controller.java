@@ -60,8 +60,8 @@ public class Controller implements Initializable {
         count = 0;
         Fx1 = new ClassTreeView();
 
-        Fx1.CurrDirFile = new File("./");
-        Fx1.CurrDirStr = Fx1.CurrDirFile.getAbsolutePath();
+        Fx1.CurrDirStr = "/";
+        Fx1.CurrDirName = "/";
         Fx1.lbl = label;
         Fx2.lbl = label;
         label.setText(Fx1.CurrDirStr);
@@ -74,6 +74,7 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         Fx1.CreateTreeView(treeview);
+        handle();
     }
 
     @FXML
@@ -81,17 +82,43 @@ public class Controller implements Initializable {
         if(mouseEvent.getClickCount() == 1){
             try {
                 TreeItem<String> item = treeview.getSelectionModel().getSelectedItem();
+                Proyecto2_2.carpeta = item.getValue();
+                if(item.getParent() == null) {
+                    Proyecto2_2.padre = null;
+                } else {
+                    Proyecto2_2.padre = item.getParent().getValue();
+                }
                 Fx1.CurrDirName = item.getValue();
                 System.out.println("Selected Text : " + item.getValue());
-                Fx1.CurrDirFile = new File(Fx1.FindAbsolutePath(item,item.getValue()));
-                Fx1.CurrDirStr = Fx1.CurrDirFile.getAbsolutePath();
-                label.setText(Fx1.CurrDirStr);
+                Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
+                label.setText("/"+Fx1.CurrDirStr);
                 Fx2.tableview.getItems().clear();
                 Fx2.CreateTableView();
-                Fx3.CreateTiles();
+                //Fx3.CreateTiles();
             } catch(Exception x) {
                 System.out.println(x.getMessage());
             }
+        }
+    }
+    
+    private void handle() {
+        try {
+            TreeItem<String> item = treeview.getRoot();
+            Proyecto2_2.carpeta = item.getValue();
+            if(item.getParent() == null) {
+                Proyecto2_2.padre = null;
+            } else {
+                Proyecto2_2.padre = item.getParent().getValue();
+            }
+            Fx1.CurrDirName = item.getValue();
+            System.out.println("Selected Text : " + item.getValue());
+            Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
+            label.setText("/"+Fx1.CurrDirStr);
+            Fx2.tableview.getItems().clear();
+            Fx2.CreateTableView();
+            //Fx3.CreateTiles();
+        } catch(Exception x) {
+            System.out.println(x.getMessage());
         }
     }
 
