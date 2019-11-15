@@ -29,16 +29,18 @@ public class Proyecto2_2 extends Application {
     public static Pila log = new Pila();
     public static Usuario actual;
     
+    //Transiciones
     public static String carpeta;
     public static String padre;
-    public static String CarpetaActual;
-    public static String ArchivoActual;
+    
+    //
     public static NodoAVL selA;
     public static NodoMatriz selC;
     
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fxml = new FXMLLoader(getClass().getResource("Ingreso.fxml"));
+        //FXMLLoader fxml = new FXMLLoader(getClass().getResource("Ingreso.fxml"));
+        FXMLLoader fxml = new FXMLLoader(getClass().getResource("Scene.fxml"));
         Parent root = (Parent) fxml.load();
         Stage stg = new Stage(StageStyle.DECORATED);
         stg.setTitle("Ingreso");
@@ -93,14 +95,17 @@ public class Proyecto2_2 extends Application {
         usuarios.buscar("Lolazo").matrix.insertar("/", "Proyectos");
         usuarios.buscar("Lolazo").matrix.insertar("/", "Reportes");
         usuarios.buscar("Lolazo").matrix.insertar("Proyectos", "EDD");
+        usuarios.buscar("Lolazo").matrix.insertar("EDD", "Semestre1");
         
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tugefa","Contenido1","Lolazo");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tuputamadre","Contenido2","YOx2");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("boynas","Contenido3","Pito");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("caca.kk","Cacaroto","Goku");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("julio.txt","pack","Tu");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("putas.harry","putas","peluca");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("date.puto","loco","Crazy");
+        boolean insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tugefa","Contenido1","Lolazo");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tuputamadre","Contenido2","YOx2");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("boynas","Contenido3","Pito");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("caca.kk","Cacaroto","Goku");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("julio.txt","pack","Tu");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("putas.harry","putas","peluca");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("date.puto","loco","Crazy");
+        
+        actual = usuarios.buscar("Lolazo");
         //usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.listInOrder(usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.root, 0);
         //System.out.println("");
         /*

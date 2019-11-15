@@ -14,7 +14,8 @@ import java.util.Date;
  */
 public class NodoAVL {
     public String nombre;
-    //public String extension;
+    public String padre;
+    public String hijo;
     public String contenido;
     public int fe;
     public int h;
@@ -25,7 +26,8 @@ public class NodoAVL {
 
     public NodoAVL() {
         this.nombre = "";
-        //this.extension = "";
+        this.padre = null;
+        this.hijo = null;
         this.contenido = "";
         this.fe = 0;
         this.h = 1;
@@ -35,9 +37,10 @@ public class NodoAVL {
         this.right = null;
     }
     
-    public NodoAVL(String nombre, String contenido, String propietario) {
+    public NodoAVL(String nombre, String contenido, String propietario,String p, String h) {
         this.nombre = nombre;
-        //this.extension = extension;
+        this.padre = p;
+        this.hijo = h;
         this.contenido = contenido;
         this.fe = 0;
         this.h = 1;

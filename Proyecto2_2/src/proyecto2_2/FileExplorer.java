@@ -22,10 +22,8 @@ import java.io.File;
 public interface FileExplorer {
     Image getIconImageFX(File f);
     TreeItem<String>[] TreeCreate(NodoFila nf);
-    TreeItem<String>[] TreeCreate(File dir);
     String FindAbsolutePath(TreeItem<String> item, String s);
     boolean IsDrive(File f);
-    int FilesHiddensCount(File dir);
     void CreateTreeView(TreeView<String> treeview);
     void CreateTableView(TableView<FileInfo> tableview, TableColumn<FileInfo, ImageView> image, TableColumn<FileInfo, String> date, TableColumn<FileInfo, String> name, TableColumn<FileInfo, String> size);
     void CreateTableView();

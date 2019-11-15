@@ -18,13 +18,16 @@ import java.util.LinkedList;
 public class AVL {
     public NodoAVL root;
     public int tam;
-    //public NodoAVL[] lista;
     public LinkedList<NodoAVL> lista;
+    public String padre;
+    public String hijo;
     
-   public AVL() {
+   public AVL(String p, String h) {
        this.root = null;
        this.tam = 0;
        this.lista = new LinkedList<>();
+       this.padre = p;
+       this.hijo = h;
    }
    
    public int getHeight(NodoAVL n) {
@@ -82,16 +85,23 @@ public class AVL {
        return y;
    }
    
-   public void insertar(String n, String c, String p) {
+   public boolean insertar(String n, String c, String p) {
+       int t1 = this.tam;
        this.root = insertar(this.root,n,c,p);
-       this.tam++;
+       linealizar();
+       int t2 = this.tam;
+       if(t1 != t2) {
+           return true;
+       } else {
+           return false;
+       }
    }
    
    private NodoAVL insertar(NodoAVL raiz, String n, String c, String p) {
        if(raiz ==  null) {
-           return (new NodoAVL(n,c,p));
+           this.tam++;
+           return (new NodoAVL(n,c,p,this.padre,this.hijo));
        }
-       
        if(n.compareTo(raiz.nombre) < 0) {
            raiz.left = insertar(raiz.left,n,c,p);
        } else if(n.compareTo(raiz.nombre) > 0) {
@@ -135,64 +145,85 @@ public class AVL {
    public void eliminar(String n) {
        this.root = eliminar(this.root, n);
        this.tam--;
+       linealizar();
+   }
+   
+   public NodoAVL buscar(String n) {
+       return buscar(this.root, n);
+   }
+   
+   private NodoAVL buscar(NodoAVL r, String n) {
+       if(r == null) {
+           return r;
+       } else {
+           if(r.nombre.equals(n)) {
+               return r;
+           } else {
+               if(n.compareTo(r.nombre) < 0) {
+                   r = buscar(r.left,n);
+               } else {
+                   r = buscar(r.right,n);
+               }
+           }
+       }
+       return r;
    }
    
    private NodoAVL eliminar(NodoAVL root, String n) {
        if(root == null) {
            return root;
        }
+       
        if(n.compareTo(root.nombre) < 0) {
            root.left = eliminar(root.left, n);
        } else if(n.compareTo(root.nombre) > 0) {
            root.right = eliminar(root.right, n);
        } else {
-           //Uno o ningun hijo
            if((root.left == null)||(root.right == null)) {
-               NodoAVL temp = null;
-               if(temp == root.left) {
-                   temp = root.right;
-               } else {
-                   temp = root.left;
-               }
-               
-               //Ningun hijo
-               if(temp == null) {
-                   temp = root;
-                   root = null;
-               } else {
-                   root = temp;
-               }
-           } else {
-               NodoAVL temp = minNodo(root.right);
-               root.nombre = temp.nombre;
-               root.right = eliminar(root.right, temp.nombre);
-           }
-       }
-       
-       if(root == null) {
-           return root;
-       }
-       
-       root.h = max(getHeight(root.left),getHeight(root.right)) + 1;
-       int balance = getBalance(root);
-       
-       if(balance > 1 && getBalance(root.right) >= 0) {
-           return leftRotate(root);
-       }
-       if(balance > 1 && getBalance(root.right) < 0) {
-           root.right = rightRotate(root.right);
-           return leftRotate(root);
-       }
-       
-       if(balance < -1 && getBalance(root.left) <= 0 ) {
-           return rightRotate(root);
-       }
-       if(balance < -1 && getBalance(root.left) > 0) {
-           root.left = leftRotate(root.left);
-           return rightRotate(root);
-       }
-       
-       return root;
+                NodoAVL temp = null;
+                if(temp == root.left) {
+                    temp = root.right;
+                } else {
+                    temp = root.left;
+                }
+
+                //Ningun hijo
+                if(temp == null) {
+                    temp = root;
+                    root = null;
+                } else {
+                    root = temp;
+                }
+            } else {
+                 NodoAVL temp = minNodo(root.right);
+                 root.nombre = temp.nombre;
+                 root.right = eliminar(root.right, temp.nombre);
+            }
+        }
+
+        if(root == null) {
+            return root;
+        }
+
+        root.h = max(getHeight(root.left),getHeight(root.right)) + 1;
+        int balance = getBalance(root);
+
+        if(balance > 1 && getBalance(root.right) >= 0) {
+            return leftRotate(root);
+        }
+        if(balance > 1 && getBalance(root.right) < 0) {
+            root.right = rightRotate(root.right);
+            return leftRotate(root);
+        }
+
+        if(balance < -1 && getBalance(root.left) <= 0 ) {
+            return rightRotate(root);
+        }
+        if(balance < -1 && getBalance(root.left) > 0) {
+            root.left = leftRotate(root.left);
+            return rightRotate(root);
+        }
+        return root;
    }
    
    public void graficar() {

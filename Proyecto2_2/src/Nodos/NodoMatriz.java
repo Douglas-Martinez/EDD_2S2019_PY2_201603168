@@ -30,7 +30,7 @@ public class NodoMatriz {
         this.hijo = "";
         this.fecha = TimeStamp();
         this.propietario = "";
-        this.archivos = new AVL();
+        this.archivos = new AVL(this.padre,this.hijo);
         this.arriba = null;
         this.abajo = null;
         this.izquierda = null;
@@ -42,7 +42,7 @@ public class NodoMatriz {
         this.hijo = hijo;
         this.fecha = TimeStamp();
         this.propietario = p;
-        this.archivos = new AVL();
+        this.archivos = new AVL(this.padre,this.hijo);
         this.arriba = null;
         this.abajo = null;
         this.izquierda = null;

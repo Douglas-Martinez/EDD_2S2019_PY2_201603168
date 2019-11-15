@@ -46,7 +46,6 @@ public class ControllerTableView implements Initializable {
     @FXML private TableColumn<FileInfo, String> name;
     
     private Desktop desktop;
-    //public ObservableList<FileInfo> list;
     public ObservableList<FileInfo> lista;
     public static FileExplorerFx Fx2;
 
@@ -104,28 +103,59 @@ public class ControllerTableView implements Initializable {
 
     @FXML
     private void handleTableMouseClicked(MouseEvent mouseEvent) {
+        Proyecto2_2.selC = null;
+        Proyecto2_2.selA = null;
         if(mouseEvent.getClickCount() == 1) {
-            //Asunto seleccinoado...
+            FileInfo lol = tableview.getSelectionModel().getSelectedItem();
+            if(lol != null) {
+                NodoMatriz aux;
+                if(lol.getTipo().equals("C")) {
+                    aux = Proyecto2_2.actual.matrix.buscar(carpeta, lol.getName());
+                    if(aux != null) {
+                        Proyecto2_2.selC = aux;
+                        System.out.println("Carpeta Seleccionada: " + Proyecto2_2.selC.hijo);
+                    }
+                } else if(lol.getTipo().equals("A")) {
+                    if(padre == null) {
+                        aux = Proyecto2_2.actual.matrix.buscar("/", carpeta);
+                    } else {
+                        aux = Proyecto2_2.actual.matrix.buscar(padre, carpeta);
+                    }
+                    if(aux != null) {
+                        NodoAVL tmp = aux.archivos.buscar(lol.getName());
+                        if(tmp != null) {
+                            Proyecto2_2.selA = tmp;
+                            System.out.println("Archivo Seleccionado: " + Proyecto2_2.selA.nombre + ". Contenido: " + Proyecto2_2.selA.contenido);
+                        }
+                    }
+                }
+            }
         } else if(mouseEvent.getClickCount() == 2) {
             FileInfo lol = tableview.getSelectionModel().getSelectedItem();
-            
-            String str = lol.getName();
-            String s = Fx2.CurrDirStr + "/" + str;
-            System.out.println(s);
-            
-            if(lol.getTipo().equals("C")) {
-                try{
-                    //Fx2.CurrDirFile = file;
-                    //Fx2.CurrDirStr = Fx2.CurrDirFile.getAbsolutePath();
-                    Fx2.CurrDirStr = Fx2.CurrDirStr + "/" + str;
-                    Fx2.setLabelTxt();
-                    padre = carpeta;
-                    carpeta = lol.getName();
-                    CurrDirName = lol.getName();
-                    tableview.getItems().clear();
-                    Fx2.CreateTableView();
-                } catch(Exception e) {  
-                    System.out.println(e.getMessage());
+            if(lol != null) {
+                String s;
+                String str = lol.getName();
+                s = Fx2.CurrDirStr + "/" + str;
+                System.out.println(s);
+                if(lol.getTipo().equals("C")) {
+                    try{
+                        if(Fx2.CurrDirStr.equals("/")) {
+                            Fx2.CurrDirStr = Fx2.CurrDirStr + str;
+                        } else {
+                            Fx2.CurrDirStr = Fx2.CurrDirStr + "/" + str;
+                        }
+                        Fx2.setLabelTxt();
+                        padre = carpeta;
+                        carpeta = lol.getName();
+                        CurrDirName = lol.getName();
+                        tableview.getItems().clear();
+                        Fx2.CreateTableView();
+                        
+                        Proyecto2_2.selA = null;
+                        Proyecto2_2.selC = null;
+                    } catch(Exception e) {  
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         }

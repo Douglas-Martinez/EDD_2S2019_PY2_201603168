@@ -17,7 +17,6 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
 import javafx.scene.image.Image;
 import static proyecto2_2.Proyecto2_2.actual;
 import static proyecto2_2.Proyecto2_2.carpeta;
@@ -89,7 +88,7 @@ public class ClassTableView extends FileExplorerFx {
                     } 
                     s3 = "C";
                 } else {
-                    img = new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/text.png")));
+                    img = new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/icon.png")));
                     s1 = lna[w-conA].nombre;
                     s2 = lna[w-conA].timestamp;
                     s3 = "A";
@@ -105,58 +104,10 @@ public class ClassTableView extends FileExplorerFx {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         tableview.setItems(lista);
-        /*
-        sdf = new SimpleDateFormat("dd/MM/yy");
-        File[] fl;
-        ObservableList<FileInfo> list;
-        if(CurrDirFile==null) {
-            CurrDirFile = new File("./"); 
-        }
-        if(CurrDirName.equals("This PC")) {
-            fl = File.listRoots();
-        } else {
-            fl = CurrDirFile.listFiles();
-        }
-        FileInfo st[] = new FileInfo[fl.length];
-        for(int i=0; i<fl.length;i++){
-            String s1 = null;
-            String s3 = null;
-            String s4 = null;
-            ImageView img = null;
-            
-            try {
-                if(IsDrive(fl[i])) {
-                    img = new ImageView(getIconImageFX(fl[i]));
-                    s1 = fl[i].getAbsolutePath();
-                    s4 = "1";
-                } else {
-                    img = new ImageView(getIconImageFX(fl[i]));
-                    s1 = fl[i].getName();
-                    s4 = "2";
-                }
-                s3 = sdf.format(fl[i].lastModified());
-            } catch(Exception e) {
-                System.out.println("Exception detected in tableview strings: " + e.getMessage());
-            }
-            st[i] = new FileInfo(img,s1,s3,s4);
-        }
-
-        list = FXCollections.observableArrayList(st);
-
-        image.setCellValueFactory(new PropertyValueFactory<>("image"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        tableview.setItems(list);
-        s*/
     }
 
     @Override
     public void CreateTiles() { }
-    
-    @Override
-    public TreeItem<String>[] TreeCreate(File dir) {
-        return null;
-    }
     
     @Override
     public TreeItem<String>[] TreeCreate(NodoFila nf) {

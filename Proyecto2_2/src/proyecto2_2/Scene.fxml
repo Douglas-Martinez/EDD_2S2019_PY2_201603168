@@ -19,7 +19,6 @@
          <children>
             <Label alignment="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="30.0" prefWidth="149.0" style="-fx-background-color: #d5dfed;" text="Directorio Actual:" />
             <Label fx:id="label" layoutX="164.0" layoutY="6.0" prefHeight="30.0" prefWidth="479.0" text="Label" />
-            <Button fx:id="btnSubir" layoutX="659.0" mnemonicParsing="false" onMouseClicked="#Subir" prefHeight="39.0" prefWidth="71.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Subir" textFill="#008f39" />
          </children>
       </Pane>
       

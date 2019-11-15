@@ -20,7 +20,10 @@ import javafx.scene.layout.VBox;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import javafx.scene.Node;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import static proyecto2_2.Proyecto2_2.actual;
 import static proyecto2_2.Proyecto2_2.carpeta;
 import static proyecto2_2.Proyecto2_2.padre;
@@ -35,11 +38,13 @@ public class ClassTilesView extends FileExplorerFx{
 
     @Override
     public void CreateTiles() {
-        
+        NodoFila nf;
         if((CurrDirName == null)|| (CurrDirName.equals(""))) {
             CurrDirName = "/";
+            nf = Proyecto2_2.actual.matrix.padres.buscar("/");
+        } else {
+            nf = Proyecto2_2.actual.matrix.padres.buscar(CurrDirName);
         }
-        NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar(CurrDirName);
         NodoMatriz nm;
         if(Proyecto2_2.padre == null) {
             nm = Proyecto2_2.actual.matrix.buscar("/", carpeta);
@@ -85,7 +90,7 @@ public class ClassTilesView extends FileExplorerFx{
                     }
                     tipo = "C";
                 } else {
-                    img = new ImageView(new Image("img/text.png"));
+                    img = new ImageView(new Image("img/icon.png"));
                     nombre = nal[e-conA].nombre;
                     date = nal[e-conA].timestamp;
                     tipo = "A";
@@ -108,7 +113,39 @@ public class ClassTilesView extends FileExplorerFx{
                 @Override
                 public void handle(MouseEvent evt) {
                     if(evt.getClickCount() == 1) {
-                       //Seleccionar
+                        for(Node v: tilePane.getChildren()) {
+                            for(Node b: ((VBox)v).getChildren()) {
+                                b.setEffect(null);
+                            }
+                        }
+                        DropShadow ds = new DropShadow(BlurType.GAUSSIAN, Color.CORAL, 5, 12, 1, 1);
+                        virbox.getChildren().get(0).setEffect(ds);
+                        
+                        String str = virbox.getId();
+                        String[] noml = ((Image)((ImageView)virbox.getChildren().get(0)).getImage()).impl_getUrl().split("/");
+                        String nom = noml[noml.length - 1];
+                        
+                        NodoMatriz aux;
+                        if(nom.equals("folder.png")) {
+                            aux = Proyecto2_2.actual.matrix.buscar(carpeta, str);
+                            if(aux != null) {
+                                Proyecto2_2.selC = aux;
+                                System.out.println("Carpeta Seleccionada: " + Proyecto2_2.selC.hijo);
+                            }
+                        } else if(nom.equals("icon.png")) {
+                            if(padre == null) {
+                                aux = Proyecto2_2.actual.matrix.buscar("/", carpeta);
+                            } else {
+                                aux = Proyecto2_2.actual.matrix.buscar(padre, carpeta);
+                            }
+                            if(aux != null) {
+                                NodoAVL tmp = aux.archivos.buscar(str);
+                                if(tmp != null) {
+                                    Proyecto2_2.selA = tmp;
+                                    System.out.println("Archivo seleccionado: " + tmp.nombre + ". Cont: " + tmp.contenido);
+                                }
+                            }
+                        }
                     } else if(evt.getClickCount() == 2){
                         String str = virbox.getId();
                         System.out.println("Presionado " + str);
@@ -118,12 +155,19 @@ public class ClassTilesView extends FileExplorerFx{
                         String nom = noml[noml.length - 1];
                         if(nom.equals("folder.png")) {
                            try {
-                               CurrDirStr  = CurrDirStr + "/" + str;
+                               if(CurrDirStr.equals("/")) {
+                                   CurrDirStr  =  CurrDirStr + str;
+                               } else {
+                                   CurrDirStr  =  CurrDirStr + "/" + str;
+                               }
                                setLabelTxt();
                                padre = carpeta;
                                carpeta = str;
                                CurrDirName = str;
                                CreateTiles();
+                               
+                               Proyecto2_2.selA = null;
+                               Proyecto2_2.selC = null;
                            } catch(Exception e) {
                                System.out.println("Error with the tile open process. " + e.getMessage());
                            }
@@ -134,64 +178,6 @@ public class ClassTilesView extends FileExplorerFx{
             TilePane.setAlignment(virbox, Pos.BOTTOM_LEFT);
             tilePane.getChildren().add(virbox);
         }
-        
-        /*
-        File[] fl;
-        if(CurrDirFile == null) {
-            CurrDirFile=new File("./");
-        }
-        
-        fl = CurrDirFile.listFiles();
-        if(CurrDirName.equals("This PC")) {
-            fl = File.listRoots();
-        }
-        
-        int len = fl.length;
-        
-        tilePane.getChildren().clear();
-        for(int i = 0; i < len; i++) {
-            //Label temp = new Label();
-            Label title = new Label(fl[i].getName());
-            title.setId(fl[i].getName());
-            ImageView imageview = new ImageView(new Image("img/folder.png"));
-            VBox vbox = new VBox();
-            vbox.setId(fl[i].getName());
-            vbox.getChildren().addAll(imageview,title);
-
-            vbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if(event.getClickCount() == 2) {
-                        System.out.println("Tile pressed " + vbox.getId());
-                        String str = vbox.getId();
-                        String str1 = CurrDirStr + "\\" + str;
-                        File f = new File(str1);
-                        if(f.isFile()) {
-                            Desktop d =Desktop.getDesktop();
-                            try {
-                                d.open(f);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else{
-                            CurrDirStr = str1;
-                            CurrDirFile = new File(CurrDirStr);
-                            setLabelTxt();
-                            tilePane.getChildren().clear();
-                            CreateTiles();
-                        }
-                    }
-                }
-            });
-            TilePane.setAlignment(vbox, Pos.BOTTOM_LEFT);
-            tilePane.getChildren().add(vbox);
-        }
-        */
-    }
-
-    @Override
-    public TreeItem<String>[] TreeCreate(File dir) { 
-        return null;
     }
     
     @Override

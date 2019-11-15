@@ -26,7 +26,6 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
  */
 public abstract class FileExplorerFx implements FileExplorer{
     static File CurrDirFile;
-    //static String CurrDirFile;
     static String CurrDirStr;
     static Label lbl;
     static String CurrDirName;
@@ -58,23 +57,6 @@ public abstract class FileExplorerFx implements FileExplorer{
             }
         }
         return false;
-    }
-    
-    @Override
-    public int FilesHiddensCount(File dir){
-        int count = 0;
-        File[] fl = dir.listFiles();
-        for(int i=0; i<fl.length; i++){
-            try{
-                if(fl[i].isHidden() || fl[i].isFile()) {
-                    count++;
-                }
-            } catch(Exception x){
-                System.out.println("Exception at prototype1, fileexplorer CountDir: "+x.getMessage());
-            }
-
-        }
-        return count;
     }
     
     @Override
