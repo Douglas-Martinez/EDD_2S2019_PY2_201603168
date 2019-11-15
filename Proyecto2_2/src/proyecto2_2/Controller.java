@@ -91,10 +91,11 @@ public class Controller implements Initializable {
                 Fx1.CurrDirName = item.getValue();
                 System.out.println("Selected Text : " + item.getValue());
                 Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
+                Fx2.CurrDirStr = Fx1.CurrDirStr;
                 label.setText("/"+Fx1.CurrDirStr);
                 Fx2.tableview.getItems().clear();
                 Fx2.CreateTableView();
-                //Fx3.CreateTiles();
+                Fx3.CreateTiles();
             } catch(Exception x) {
                 System.out.println(x.getMessage());
             }
@@ -111,12 +112,11 @@ public class Controller implements Initializable {
                 Proyecto2_2.padre = item.getParent().getValue();
             }
             Fx1.CurrDirName = item.getValue();
-            System.out.println("Selected Text : " + item.getValue());
+            //System.out.println("Selected Text : " + item.getValue());
             Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
-            label.setText("/"+Fx1.CurrDirStr);
             Fx2.tableview.getItems().clear();
             Fx2.CreateTableView();
-            //Fx3.CreateTiles();
+            Fx3.CreateTiles();
         } catch(Exception x) {
             System.out.println(x.getMessage());
         }
@@ -133,6 +133,7 @@ public class Controller implements Initializable {
             newLoadedPane =  FXMLLoader.load(getClass().getResource("Scene3.fxml"));
         }
         secPane.getChildren().add(newLoadedPane);
+        Fx2.CreateTableView();
         Proyecto2_2.log.Push("Cambio la vista del contenido de la carpeta", Proyecto2_2.actual.usuario);
     }
     

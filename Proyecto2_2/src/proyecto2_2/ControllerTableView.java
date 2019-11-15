@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import static proyecto2_2.FileExplorerFx.CurrDirName;
 import static proyecto2_2.Proyecto2_2.actual;
+import static proyecto2_2.Proyecto2_2.carpeta;
+import static proyecto2_2.Proyecto2_2.padre;
 
 /**
  * FXML Controller class
@@ -103,17 +105,23 @@ public class ControllerTableView implements Initializable {
     @FXML
     private void handleTableMouseClicked(MouseEvent mouseEvent) {
         if(mouseEvent.getClickCount() == 1) {
-            
+            //Asunto seleccinoado...
         } else if(mouseEvent.getClickCount() == 2) {
-            String str = tableview.getSelectionModel().getSelectedItem().getName();
-            String s = Fx2.CurrDirStr + "\\" + str;
+            FileInfo lol = tableview.getSelectionModel().getSelectedItem();
+            
+            String str = lol.getName();
+            String s = Fx2.CurrDirStr + "/" + str;
             System.out.println(s);
-            File file = new File(s);
-            if(file.isDirectory()) {
+            
+            if(lol.getTipo().equals("C")) {
                 try{
-                    Fx2.CurrDirFile = file;
-                    Fx2.CurrDirStr = Fx2.CurrDirFile.getAbsolutePath();
+                    //Fx2.CurrDirFile = file;
+                    //Fx2.CurrDirStr = Fx2.CurrDirFile.getAbsolutePath();
+                    Fx2.CurrDirStr = Fx2.CurrDirStr + "/" + str;
                     Fx2.setLabelTxt();
+                    padre = carpeta;
+                    carpeta = lol.getName();
+                    CurrDirName = lol.getName();
                     tableview.getItems().clear();
                     Fx2.CreateTableView();
                 } catch(Exception e) {  

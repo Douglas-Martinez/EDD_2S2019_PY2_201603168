@@ -18,8 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
-import java.nio.file.FileSystems;
-import java.text.SimpleDateFormat;
 import javafx.scene.image.Image;
 import static proyecto2_2.Proyecto2_2.actual;
 import static proyecto2_2.Proyecto2_2.carpeta;
@@ -101,14 +99,7 @@ public class ClassTableView extends FileExplorerFx {
             }
             sts[w] = new FileInfo(img,s1,s2,s3);
         }
-        if(sts.length == 0)
-        {
-            lista = FXCollections.observableArrayList((param) -> {
-                return null; //To change body of generated lambdas, choose Tools | Templates.
-            });
-        } else {
-            lista = FXCollections.observableArrayList(sts);
-        }
+        lista = FXCollections.observableArrayList(sts);
 
         image.setCellValueFactory(new PropertyValueFactory<>("image"));
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
