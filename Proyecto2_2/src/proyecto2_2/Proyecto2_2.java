@@ -105,6 +105,9 @@ public class Proyecto2_2 extends Application {
         insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("putas.harry","putas","peluca");
         insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("date.puto","loco","Crazy");
         
+        usuarios.insertar("Alv", "qazwsxedc");
+        insertar = usuarios.buscar("Alv").matrix.buscar("/", "/").archivos.insertar("julio.txt", "qwertyuiop", "zxcvbnm");
+        
         actual = usuarios.buscar("Lolazo");
         //usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.listInOrder(usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.root, 0);
         //System.out.println("");

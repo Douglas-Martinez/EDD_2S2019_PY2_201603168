@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.Usuario;
 import Nodos.NodoAVL;
 import Nodos.NodoMatriz;
 import java.awt.Desktop;
@@ -313,6 +314,12 @@ public class Controller implements Initializable {
                     }
                 }
             }
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Archivo Ivalido");
+            a.setHeaderText("No se ha seleccionado ningun archivo");
+            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.showAndWait();
         }
         Proyecto2_2.selC = null;
         selA = null;
@@ -380,77 +387,6 @@ public class Controller implements Initializable {
                         boolean acc = nm.archivos.insertar(s1, cont.getText(), Proyecto2_2.actual.usuario);
                     }
                 }
-                /*
-                if(!(nombre.getText().equals("")) && !(cont.getText().equals(""))) {
-                    boolean acc = nm.archivos.insertar(nombre.getText(), cont.getText(), Proyecto2_2.actual.usuario);
-                    if(acc == true) {
-                        Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
-                    } else {
-                        NodoAVL sob = nm.archivos.buscar(nombre.getText());
-                        if(sob != null) {
-                            sob.contenido = cont.getText();
-                            Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setTitle("Sobreescirutra");
-                            a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
-                            a.showAndWait();
-                            Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
-                        }
-                    }
-                } else {
-                    if(nombre.getText().equals("") && cont.getText().equals("")) {
-                        boolean acc = nm.archivos.insertar(s1, s2, Proyecto2_2.actual.usuario);
-                        
-                        if(acc == true) {
-                            Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
-                        } else {
-                            NodoAVL sob = nm.archivos.buscar(nombre.getText());
-                            if(sob != null) {
-                                sob.contenido = cont.getText();
-                                Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setTitle("Sobreescirutra");
-                                a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
-                                a.showAndWait();
-                                Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
-                            }
-                        }
-                        
-                    } else {
-                        if(nombre.getText().equals("")) {
-                            boolean acc = nm.archivos.insertar(s1, cont.getText(), Proyecto2_2.actual.usuario);
-                            
-                            if(acc == true) {
-                                Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
-                            } else {
-                                NodoAVL sob = nm.archivos.buscar(nombre.getText());
-                                if(sob != null) {
-                                    sob.contenido = cont.getText();
-                                    Alert a = new Alert(Alert.AlertType.WARNING);
-                                    a.setTitle("Sobreescirutra");
-                                    a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
-                                    a.showAndWait();
-                                    Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
-                                }
-                            }
-                            
-                        } else {
-                            boolean acc = nm.archivos.insertar(nombre.getText(), s2, Proyecto2_2.actual.usuario);
-                                if(acc == true) {
-                                    Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
-                                } else {
-                                    NodoAVL sob = nm.archivos.buscar(nombre.getText());
-                                    if(sob != null) {
-                                        sob.contenido = cont.getText();
-                                        Alert a = new Alert(Alert.AlertType.WARNING);
-                                        a.setTitle("Sobreescirutra");
-                                        a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
-                                        a.showAndWait();
-                                        Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
-                                    }
-                                }
-                        }
-                    }    
-                }
-                */
                 Proyecto2_2.log.Push("Modificacion del archivo: \"" + s1 + "\" a: \"" + nombre.getText() + "\"", Proyecto2_2.actual.usuario);
                 Fx2.tableview.getItems().clear();
                 Fx2.CreateTableView();
@@ -458,7 +394,13 @@ public class Controller implements Initializable {
                     Fx3.CreateTiles();
                 }
             }
-        } 
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Archivo Ivalido");
+            a.setHeaderText("No se ha seleccionado ningun archivo");
+            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.showAndWait();
+        }
         Proyecto2_2.selC = null;
         selA = null;
     }
@@ -468,12 +410,24 @@ public class Controller implements Initializable {
         if(Proyecto2_2.selA != null) {
             NodoMatriz nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.selA.padre, Proyecto2_2.selA.hijo);
             nm.archivos.eliminar(Proyecto2_2.selA.nombre);
+            
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Operacion Exitosa");
+            a.setHeaderText("Archivo eliminado con exito");
+            a.showAndWait();
+            Proyecto2_2.log.Push("Elimino el archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
+            
             Fx2.tableview.getItems().clear();
             Fx2.CreateTableView();
             if(Fx3 != null) {
                 Fx3.CreateTiles();
             }
-            Proyecto2_2.log.Push("Elimino el archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Archivo Ivalido");
+            a.setHeaderText("No se ha seleccionado ningun archivo");
+            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.showAndWait();
         }
         Proyecto2_2.selC = null;
         Proyecto2_2.selA = null;
@@ -486,7 +440,65 @@ public class Controller implements Initializable {
     
     @FXML
     private void CompartirA(MouseEvent evt) {
-           
+        if(Proyecto2_2.selA != null) {
+            TextInputDialog d = new TextInputDialog();
+            d.setTitle("Compartir a");
+            d.setHeaderText("Se compartira el archivo \"" + selA.nombre + "\"" );
+            d.setContentText("Ingresa el nombre del usuario a compartir");
+            
+            Optional<String> result = d.showAndWait();
+            if(result.isPresent()) {
+                String n = result.get();
+                if(!n.equals("")) {
+                    Usuario temp = Proyecto2_2.usuarios.buscar(n);
+                    if(temp != null) {
+                        boolean acc = temp.matrix.buscar("/", "/").archivos.insertar(selA.nombre, selA.contenido, temp.usuario);
+                        if(acc == true) {
+                             Alert a = new Alert(Alert.AlertType.INFORMATION);
+                             a.setTitle("Operacion Exitosa");
+                             a.setHeaderText("Archivo compartido con exito");
+                             a.showAndWait();
+                             Proyecto2_2.log.Push("Archivo " + selA.nombre + " la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
+                        } else {
+                            NodoAVL sob = temp.matrix.buscar("/", "/").archivos.buscar(selA.nombre);
+                            if(sob != null) {
+                                sob.contenido = selA.contenido;
+                                Alert a = new Alert(Alert.AlertType.WARNING);
+                                a.setTitle("Sobre escirutra");
+                                a.setHeaderText("Archivo Ya Existe");
+                                a.setContentText("Contenido del archivo " + sob.nombre + " sobre escrito en la carpeta / del usuario: " + temp.usuario);
+                                a.showAndWait();
+                                Proyecto2_2.log.Push("Contenido del arcvhivo " + selA.nombre + " sobre escrito en la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
+                                Proyecto2_2.log.Push("Archivo " + selA.nombre + " la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
+                            } else {
+                                Alert a = new Alert(Alert.AlertType.WARNING);
+                                a.setTitle("Error al compartir");
+                                a.setContentText("No se pudo compartir el archivo, lo sentimos");
+                                a.showAndWait();
+                            }
+                        }
+                    } else {
+                        Alert a = new Alert(Alert.AlertType.WARNING);
+                        a.setTitle("Usuario Invalido");
+                        a.setContentText("El usuario solicitao no existe");
+                        a.showAndWait();
+                    }
+                } else {
+                    Alert a = new Alert(Alert.AlertType.WARNING);
+                    a.setTitle("Usuario Invalido");
+                    a.setContentText("El campo usuario no puede estar vacio");
+                    a.showAndWait();
+                }
+            }
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Archivo Ivalido");
+            a.setHeaderText("No se ha seleccionado ningun archivo");
+            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.showAndWait();
+        }
+        Proyecto2_2.selC = null;
+        selA = null;
     }
     
     @FXML
@@ -498,18 +510,30 @@ public class Controller implements Initializable {
                 escribir = new PrintWriter(new BufferedWriter(new FileWriter(nombre)));
                 escribir.println(Proyecto2_2.selA.contenido);
                 escribir.close();
+                
+                Proyecto2_2.log.Push("Descarga correcta del archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setTitle("Operacion Exitosa");
+                a.setHeaderText("Archivo descargado con exito");
+                a.showAndWait();
+                
+                File fOpen = new File(nombre);
+                Desktop d = Desktop.getDesktop();
+                try {
+                    d.open(fOpen);
+                } catch(Exception e) {
+                    System.out.println("Error al abrir " + e.getMessage());
+                }
             } catch (Exception e) {
                 System.err.println("Error al crear archivo " + e.toString());
                 Proyecto2_2.log.Push("No se pudo realizar la descarga del archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
             }
-            Proyecto2_2.log.Push("Descarga correcta del archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
-            File fOpen = new File(nombre);
-            Desktop d = Desktop.getDesktop();
-            try {
-                d.open(fOpen);
-            } catch(Exception e) {
-                System.out.println("Error al abrir " + e.getMessage());
-            }
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Archivo Ivalido");
+            a.setHeaderText("No se ha seleccionado ningun archivo");
+            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.showAndWait();
         }
     }
 }
