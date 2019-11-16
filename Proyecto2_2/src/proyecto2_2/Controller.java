@@ -9,6 +9,7 @@ import Clases.Usuario;
 import Nodos.NodoAVL;
 import Nodos.NodoMatriz;
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,12 +38,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import javafx.util.Pair;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import static proyecto2_2.ControllerTableView.Fx2;
 import static proyecto2_2.ControllerTilesView.Fx3;
@@ -64,8 +70,8 @@ public class Controller implements Initializable {
     @FXML private TreeView<String> treeview;
     @FXML private Label label;
     
-    @FXML private Button btnReportes;
     @FXML private Button btnLogOut;
+    @FXML private Button btnCargarA;
     
     private int count;
     static ClassTreeView Fx1;
@@ -242,38 +248,46 @@ public class Controller implements Initializable {
     
     @FXML
     private void CrearA(MouseEvent evt) {
-        if(Proyecto2_2.actual != null) {
-            Dialog<Pair<String, String>> dialog = new Dialog<>();
-            dialog.setTitle("Crear Archivo");
-            dialog.setGraphic(null);
-
-            ButtonType change = new ButtonType("Modificar", ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(change, ButtonType.CANCEL);
+        if(Proyecto2_2.carpeta != null) {
+            Dialog<String[]> dilog = new Dialog<>();
+            dilog.setTitle("Crear Archivo");
+            dilog.setResizable(true);
             
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(20, 150, 10, 10));
-
-            TextField nombre = new TextField();
-            TextField cont = new TextField();
-
-            grid.add(new Label("Nombre:"), 0, 0);
-            grid.add(nombre, 1, 0);
-            grid.add(new Label("Contenido:"), 0, 1);
-            grid.add(cont, 1, 1);
+            Label l1 = new Label("Nombre: ");
+            Label l2 = new Label("Contenido");
+            TextField t1 = new TextField();
+            TextArea ta1 = new TextArea();
             
-            Node acept = dialog.getDialogPane().lookupButton(change);
-            dialog.getDialogPane().setContent(grid);
+            GridPane g = new GridPane();
+            g.add(l1, 1, 1);
+            g.add(t1, 2, 1);
+            g.add(l2, 1, 2);
+            g.add(ta1, 2, 2);
+            dilog.getDialogPane().setContent(g);
+
+            ButtonType buttonType = new ButtonType("Modificar", ButtonData.OK_DONE);
+            dilog.getDialogPane().getButtonTypes().addAll(buttonType,ButtonType.CANCEL);
             
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-            if(result.isPresent()) {
-                if(nombre.getText().equals("")) {
+            dilog.setResultConverter(new Callback<ButtonType, String[]>() {
+                @Override
+                public String[] call(ButtonType b) {
+                    if(b == buttonType) {
+                        String[] r2 = new String[2];
+                        r2[0] = t1.getText();
+                        r2[1] = ta1.getText();
+                        return r2;
+                    }
+                    return null;
+                }
+            });
+            
+            Optional<String[]> res = dilog.showAndWait();
+            if(res.isPresent()) {
+                if(res.get()[0].equals("")) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Nombre vacio");
                     a.setContentText("El nombre del archivo no puede estar vacio");
                     a.showAndWait();
-                    Proyecto2_2.log.Push("Fallo al crear archivo: Nobre Vacio", Proyecto2_2.actual.usuario);
                 } else {
                     NodoMatriz nm;
                     if(!(Proyecto2_2.padre == null) && !(Proyecto2_2.carpeta == null)) {
@@ -289,23 +303,26 @@ public class Controller implements Initializable {
                             }
                         }
                     }
+                    
                     if(nm != null) {
-                        if(nm != null) {
-                            boolean acc = nm.archivos.insertar(nombre.getText(), cont.getText(), Proyecto2_2.actual.usuario);
-                            if(acc == true) {
-                                Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
-                            } else {
-                                NodoAVL sob = nm.archivos.buscar(nombre.getText());
-                                if(sob != null) {
-                                    sob.contenido = cont.getText();
-                                    Alert a = new Alert(Alert.AlertType.WARNING);
-                                    a.setTitle("Sobreescirutra");
-                                    a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
-                                    a.showAndWait();
-                                    Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
-                                }
+                        boolean acc = nm.archivos.insertar(res.get()[0], res.get()[1], Proyecto2_2.actual.usuario);
+                        if(acc == true) {
+                            Proyecto2_2.log.Push("Archivo creado: " + res.get()[0], Proyecto2_2.actual.usuario);
+                        } else {
+                            NodoAVL sob = nm.archivos.buscar(res.get()[0]);
+                            if(sob != null) {
+                                sob.contenido = res.get()[1];
+                                Alert a = new Alert(Alert.AlertType.WARNING);
+                                a.setTitle("Sobreescirutra");
+                                a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
+                                a.showAndWait();
+                                Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
                             }
                         }
+                        Alert a = new Alert(Alert.AlertType.INFORMATION);
+                        a.setTitle("Operacion Exitosa");
+                        a.setHeaderText("Archivo creado exitosamente");
+                        a.showAndWait();
                         Fx2.tableview.getItems().clear();
                         Fx2.CreateTableView();
                         if(Fx3 != null) {
@@ -315,10 +332,9 @@ public class Controller implements Initializable {
                 }
             }
         } else {
-            Alert a = new Alert(Alert.AlertType.WARNING);
-            a.setTitle("Archivo Ivalido");
-            a.setHeaderText("No se ha seleccionado ningun archivo");
-            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Ruta Invalida");
+            a.setHeaderText("Ubicacion Erronea");
             a.showAndWait();
         }
         Proyecto2_2.selC = null;
@@ -328,50 +344,64 @@ public class Controller implements Initializable {
     @FXML
     private void ModificarA(MouseEvent evt) {
         if(Proyecto2_2.selA != null) {
-            Dialog<Pair<String, String>> dialog = new Dialog<>();
-            dialog.setTitle("Modificar Archivo");
-            dialog.setHeaderText("Archivo: " + selA.nombre);
-            dialog.setGraphic(null);
-
-            ButtonType change = new ButtonType("Modificar", ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(change, ButtonType.CANCEL);
+            Alert al = new Alert(Alert.AlertType.WARNING);
+            al.setTitle("Modificar Archivo");
+            al.setHeaderText("Importante");
+            al.setContentText("Si el borra completamente el nombre solo se modificara el contenido del archivo seleccionado.\n\n(No cambiara de nombre)");
+            al.showAndWait();
             
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(20, 150, 10, 10));
-
-            TextField nombre = new TextField();
-            nombre.setPromptText(Proyecto2_2.selA.nombre);
-            TextField cont = new TextField();
-            cont.setPromptText(Proyecto2_2.selA.contenido);
-
-            grid.add(new Label("Nombre:"), 0, 0);
-            grid.add(nombre, 1, 0);
-            grid.add(new Label("Contenido:"), 0, 1);
-            grid.add(cont, 1, 1);
+            Dialog<String[]> dilog = new Dialog<>();
+            dilog.setTitle("Modificar Archivo");
+            dilog.setHeaderText("Archivo: " + selA.nombre);
+            dilog.setResizable(false);
             
-            Node acept = dialog.getDialogPane().lookupButton(change);
-            dialog.getDialogPane().setContent(grid);
+            Label l1 = new Label("Nombre: ");
+            Label l2 = new Label("Contenido");
+            TextField t1 = new TextField(selA.nombre);
+            TextArea ta1 = new TextArea(selA.contenido);
             
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-            if(result.isPresent()) {
+            GridPane g = new GridPane();
+            g.add(l1, 1, 1);
+            g.add(t1, 2, 1);
+            g.add(l2, 1, 2);
+            g.add(ta1, 2, 2);
+            dilog.getDialogPane().setContent(g);
+
+            ButtonType buttonType = new ButtonType("Modificar", ButtonData.OK_DONE);
+            dilog.getDialogPane().getButtonTypes().addAll(buttonType,ButtonType.CANCEL);
+            
+            dilog.setResultConverter(new Callback<ButtonType, String[]>() {
+                @Override
+                public String[] call(ButtonType b) {
+                    if(b == buttonType) {
+                        String[] r2 = new String[2];
+                        r2[0] = t1.getText();
+                        r2[1] = ta1.getText();
+                        return r2;
+                    }
+                    return null;
+                }
+            });
+            
+            Optional<String[]> res = dilog.showAndWait();
+            
+            if(res.isPresent()) {
                 NodoMatriz nm = Proyecto2_2.actual.matrix.buscar(selA.padre, selA.hijo);
                 String s1 = selA.nombre;
                 String s2 = selA.contenido;
                 
                 nm.archivos.eliminar(selA.nombre);
-                if(!(nombre.getText().equals(""))) {
-                    boolean acc = nm.archivos.insertar(nombre.getText(), cont.getText(), Proyecto2_2.actual.usuario);
+                if(!(res.get()[0].equals(""))) {
+                    boolean acc = nm.archivos.insertar(res.get()[0], res.get()[1], Proyecto2_2.actual.usuario);
                     if(acc == true) {
-                        Proyecto2_2.log.Push("Archivo creado: " + nombre.getText(), Proyecto2_2.actual.usuario);
+                        Proyecto2_2.log.Push("Archivo creado por modificacion: " + res.get()[0], Proyecto2_2.actual.usuario);
                     } else {
-                        NodoAVL sob = nm.archivos.buscar(nombre.getText());
+                        NodoAVL sob = nm.archivos.buscar(res.get()[0]);
                         if(sob != null) {
-                            if(cont.getText().equals("")) {
+                            if(res.get()[1].equals("")) {
                                 sob.contenido = s2;
                             } else {
-                                sob.contenido = cont.getText();
+                                sob.contenido = res.get()[1];
                             }
                             Alert a = new Alert(Alert.AlertType.WARNING);
                             a.setTitle("Sobreescirutra");
@@ -381,18 +411,19 @@ public class Controller implements Initializable {
                         }
                     }
                 } else {
-                    if(cont.getText().equals("")) {
-                        boolean acc = nm.archivos.insertar(s1, s2, Proyecto2_2.actual.usuario);
-                    } else {
-                        boolean acc = nm.archivos.insertar(s1, cont.getText(), Proyecto2_2.actual.usuario);
-                    }
+                    boolean acc = nm.archivos.insertar(s1, res.get()[1], Proyecto2_2.actual.usuario);
                 }
-                Proyecto2_2.log.Push("Modificacion del archivo: \"" + s1 + "\" a: \"" + nombre.getText() + "\"", Proyecto2_2.actual.usuario);
+                Proyecto2_2.log.Push("Modificacion del archivo: \"" + s1 + "\" a: \"" + res.get()[0] + "\"", Proyecto2_2.actual.usuario);
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setTitle("Operacion Exitosa");
+                a.setHeaderText("Archivo Modificado con exito");
+                a.showAndWait();
                 Fx2.tableview.getItems().clear();
                 Fx2.CreateTableView();
                 if(Fx3 != null) {
                     Fx3.CreateTiles();
                 }
+                
             }
         } else {
             Alert a = new Alert(Alert.AlertType.WARNING);
@@ -426,7 +457,7 @@ public class Controller implements Initializable {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Archivo Ivalido");
             a.setHeaderText("No se ha seleccionado ningun archivo");
-            a.setContentText("Selecciona un archivo y pruba de nuevo");
+            a.setContentText("Selecciona un archivo y prueba de nuevo");
             a.showAndWait();
         }
         Proyecto2_2.selC = null;
@@ -435,7 +466,80 @@ public class Controller implements Initializable {
     
     @FXML
     private void CargarA(MouseEvent evt) {
-        
+        if(Proyecto2_2.carpeta != null) {
+            File workingD = new File(System.getProperty("user.dir"));
+            Stage st = (Stage) btnCargarA.getScene().getWindow();
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("csv files", "*.csv");
+            
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Carga Masiva Archivos");
+            fc.setInitialDirectory(workingD);
+            fc.getExtensionFilters().add(filter);
+            File f = fc.showOpenDialog(st);
+            if(f != null) {
+                BufferedReader bf;
+                try {
+                    NodoMatriz nm;
+                    if(!(Proyecto2_2.padre == null) && !(Proyecto2_2.carpeta == null)) {
+                        nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.padre, Proyecto2_2.carpeta);
+                    } else {
+                        if((Proyecto2_2.padre == null) && (Proyecto2_2.carpeta == null)) {
+                            nm = Proyecto2_2.actual.matrix.buscar("/", "/");
+                        } else {
+                            if(Proyecto2_2.padre == null) {
+                                nm = Proyecto2_2.actual.matrix.buscar("/", Proyecto2_2.carpeta);
+                            } else {
+                                nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, "/");
+                            }
+                        }
+                    }
+                    
+                    bf = new BufferedReader(new FileReader(f));
+                    String line = bf.readLine();
+                    line = bf.readLine();
+                    while(line != null) {
+                        String[] u1 = line.split(",");
+                        if(u1.length == 2) {
+                            String s1 = u1[0];
+                            String s2 = u1[1].replaceAll("\"", "");
+                            
+                            if(nm != null) {
+                                boolean acc = nm.archivos.insertar(s1, s2, Proyecto2_2.actual.usuario);
+                                if(acc == true) {
+                                    Proyecto2_2.log.Push("Archivo creado mediante carga masiva: " + s1, Proyecto2_2.actual.usuario);
+                                } else {
+                                    NodoAVL sob = nm.archivos.buscar(s1);
+                                    if(sob != null) {
+                                        sob.contenido = s2;
+                                        Proyecto2_2.log.Push("Sobreescritura del Archivo mediante carga masiva: " + sob.nombre, Proyecto2_2.actual.usuario);
+                                    }
+                                }
+                            }
+                            System.out.println(s1 + " - " + s2);
+                        }
+                        line = bf.readLine();
+                    }
+                    bf.close();
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setTitle("Carga de Archivos");
+                    a.setHeaderText("Carga de Archivos completada");
+                    a.showAndWait();
+                    Proyecto2_2.log.Push("Carga masiva realizada en la carpeta " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
+                    Fx2.tableview.getItems().clear();
+                    Fx2.CreateTableView();
+                    if(Fx3 != null) {
+                        Fx3.CreateTiles();
+                    }
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } else {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Ruta Invalida");
+            a.setHeaderText("Ubicacion Erronea");
+            a.showAndWait();
+        }
     }
     
     @FXML
@@ -445,6 +549,7 @@ public class Controller implements Initializable {
             d.setTitle("Compartir a");
             d.setHeaderText("Se compartira el archivo \"" + selA.nombre + "\"" );
             d.setContentText("Ingresa el nombre del usuario a compartir");
+            d.setResizable(false);
             
             Optional<String> result = d.showAndWait();
             if(result.isPresent()) {

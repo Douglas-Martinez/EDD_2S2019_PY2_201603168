@@ -15,10 +15,10 @@
       <Button fx:id="btn" layoutX="757.0" layoutY="188.0" mnemonicParsing="false" onAction="#loadFxml" prefHeight="39.0" prefWidth="71.0" style="-fx-background-color: #047ff8; -fx-border-color: #000000;" text="Vista" textFill="WHITE" />
       <TreeView fx:id="treeview" layoutX="14.0" layoutY="251.0" onMouseClicked="#handleMouseClicked" prefHeight="485.0" prefWidth="250.0" />
       <Pane fx:id="secPane" layoutX="280.0" layoutY="251.0" prefHeight="485.0" prefWidth="550.0" style="-fx-border-color: #c8c8c8;" />
-      <Pane layoutX="14.0" layoutY="188.0" prefHeight="41.0" prefWidth="651.0" style="-fx-border-color: #bfbfbf; -fx-background-color: #faffff;">
+      <Pane layoutX="14.0" layoutY="188.0" prefHeight="41.0" prefWidth="732.0" style="-fx-border-color: #bfbfbf; -fx-background-color: #faffff;">
          <children>
             <Label alignment="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="30.0" prefWidth="149.0" style="-fx-background-color: #d5dfed;" text="Directorio Actual:" />
-            <Label fx:id="label" layoutX="164.0" layoutY="6.0" prefHeight="30.0" prefWidth="479.0" text="Label" />
+            <Label fx:id="label" layoutX="164.0" layoutY="6.0" prefHeight="30.0" prefWidth="564.0" text="Label" />
          </children>
       </Pane>
       
@@ -43,9 +43,9 @@
          <children>
             <Button fx:id="btnEliminarA" layoutX="250.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#EliminarA" prefHeight="50.0" prefWidth="110.0" text="Eliminar" />
             <Button fx:id="btnCrearA" layoutX="10.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#CrearA" prefHeight="50.0" prefWidth="110.0" text="Crear" />
-            <Button alignment="CENTER" layoutX="370.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#DescargarA" prefHeight="50.0" prefWidth="110.0" text="Descargar" />
-            <Button alignment="CENTER" layoutX="490.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CompartirA" prefHeight="50.0" prefWidth="110.0" text="Compartir" />
-            <Button alignment="CENTER" layoutX="610.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CargarA" prefHeight="50.0" prefWidth="110.0" text="Cargar" />
+            <Button fx:id="btnDescargarA" alignment="CENTER" layoutX="370.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#DescargarA" prefHeight="50.0" prefWidth="110.0" text="Descargar" />
+            <Button fx:id="btnCompartirA" alignment="CENTER" layoutX="490.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CompartirA" prefHeight="50.0" prefWidth="110.0" text="Compartir" />
+            <Button fx:id="btnCargarA" alignment="CENTER" layoutX="610.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CargarA" prefHeight="50.0" prefWidth="110.0" text="Cargar" />
             <Button fx:id="btnModificarA" layoutX="130.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#ModificarA" prefHeight="50.0" prefWidth="110.0" text="Modificar" />
          </children>
       </Pane>
