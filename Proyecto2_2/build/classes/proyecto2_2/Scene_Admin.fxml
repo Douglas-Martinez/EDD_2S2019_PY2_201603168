@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="750.0" prefWidth="843.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto2_2.Controller">
+   <children>
+      <Button fx:id="btn" layoutX="757.0" layoutY="188.0" mnemonicParsing="false" onAction="#loadFxml" prefHeight="39.0" prefWidth="71.0" style="-fx-background-color: #047ff8; -fx-border-color: #000000;" text="Vista" textFill="WHITE" />
+      <TreeView fx:id="treeview" layoutX="14.0" layoutY="251.0" onMouseClicked="#handleMouseClicked" prefHeight="485.0" prefWidth="250.0" />
+      <Pane fx:id="secPane" layoutX="280.0" layoutY="251.0" prefHeight="485.0" prefWidth="550.0" style="-fx-border-color: #c8c8c8;" />
+      <Pane layoutX="14.0" layoutY="188.0" prefHeight="41.0" prefWidth="732.0" style="-fx-border-color: #bfbfbf; -fx-background-color: #faffff;">
+         <children>
+            <Label alignment="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="30.0" prefWidth="149.0" style="-fx-background-color: #d5dfed;" text="Directorio Actual:" />
+            <Label fx:id="label" layoutX="164.0" layoutY="6.0" prefHeight="30.0" prefWidth="564.0" text="Label" />
+         </children>
+      </Pane>
+      
+      <Pane layoutX="98.0" layoutY="14.0" prefHeight="70.0" prefWidth="370.0" style="-fx-border-color: #c8c8c8; -fx-background-color: #faffff;">
+         <children>
+            <Button fx:id="btnModificarC" layoutX="130.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#ModificarC" prefHeight="50.0" prefWidth="110.0" text="Modificar" />
+            <Button fx:id="btnCrearC" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CrearC" prefHeight="50.0" prefWidth="110.0" text="Crear" />
+            <Button fx:id="btnEliminarC" layoutX="250.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#EliminarC" prefHeight="50.0" prefWidth="110.0" text="Eliminar" />
+         </children>
+      </Pane>
+      <Label layoutX="14.0" layoutY="34.0" text="Carpetas">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="120.0" text="Archivos">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Pane layoutX="98.0" layoutY="100.0" prefHeight="70.0" prefWidth="732.0" style="-fx-border-color: #c8c8c8; -fx-background-color: #faffff;">
+         <children>
+            <Button fx:id="btnEliminarA" layoutX="250.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#EliminarA" prefHeight="50.0" prefWidth="110.0" text="Eliminar" />
+            <Button fx:id="btnCrearA" layoutX="10.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#CrearA" prefHeight="50.0" prefWidth="110.0" text="Crear" />
+            <Button fx:id="btnDescargarA" alignment="CENTER" layoutX="370.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#DescargarA" prefHeight="50.0" prefWidth="110.0" text="Descargar" />
+            <Button fx:id="btnCompartirA" alignment="CENTER" layoutX="490.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CompartirA" prefHeight="50.0" prefWidth="110.0" text="Compartir" />
+            <Button fx:id="btnCargarA" alignment="CENTER" layoutX="610.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#CargarA" prefHeight="50.0" prefWidth="110.0" text="Cargar" />
+            <Button fx:id="btnModificarA" layoutX="130.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#ModificarA" prefHeight="50.0" prefWidth="110.0" text="Modificar" />
+         </children>
+      </Pane>
+      <Button fx:id="btnLogOut" contentDisplay="CENTER" layoutX="728.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#LogOut" prefHeight="50.0" prefWidth="100.0" style="-fx-border-color: #ff0000;" text="Log Out">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
+      <Button fx:id="btnReportes" alignment="CENTER" layoutX="621.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#Reportes" prefHeight="50.0" prefWidth="100.0" style="-fx-border-color: #0000ff;" text="Reportes">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
+      <Button fx:id="btnCargarU" layoutX="475.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#CargaMasiva" prefHeight="50.0" prefWidth="139.0" style="-fx-border-color: #26ff60;" text="Cargar Usuarios">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

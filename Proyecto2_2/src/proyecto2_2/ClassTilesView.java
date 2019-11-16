@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.FileInfo;
 import Nodos.NodoAVL;
 import Nodos.NodoFila;
 import Nodos.NodoMatriz;

@@ -1,26 +1,25 @@
-digraph avl {
+digraph pila{ 
+	node[shape=record];
 
-	graph[splines=ortho, nodesep=0.5];
+	graph[pencolor=transparent];
 
-	node[shape=record, style=filled, fillcolor=seashell2];
+	rankdir=TB;
 
-	1289696681[label="<C0>|Nombre: caca.kk\nContenido: Cacaroto\nPropietario: Goku\nTimeStmp: 12-11-2019::23:39:55\nAltura: 3\nFE: 0|<C1>"];
-	1285044316[label="<C0>|Nombre: alv.tuputamadre\nContenido: Contenido2\nPropietario: YOx2\nTimeStmp: 12-11-2019::23:39:55\nAltura: 2\nFE: 0|<C1>"];
-	1607460018[label="<C0>|Nombre: alv.tugefa\nContenido: Contenido1\nPropietario: YO\nTimeStmp: 12-11-2019::23:39:55\nAltura: 1\nFE: 0|<C1>"];
-	1811075214[label="<C0>|Nombre: boynas\nContenido: Contenido3\nPropietario: Pito\nTimeStmp: 12-11-2019::23:39:55\nAltura: 1\nFE: 0|<C1>"];
-	1588970020[label="<C0>|Nombre: julio.txt\nContenido: |   |\nPropietario: Tu\nTimeStmp: 12-11-2019::23:39:55\nAltura: 2\nFE: 1|<C1>"];
-	1407343478[label="<C0>|Nombre: putas.harry\nContenido: putas\nPropietario: peluca\nTimeStmp: 12-11-2019::23:39:55\nAltura: 1\nFE: 0|<C1>"];
+	645032495[label="Operacion: Generacion del Reporte de la Matriz de Directorios\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:41"];
+
+	1807496069[label="Operacion: Generacion del Reporte del Grafo de Directorios\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:37"];
+
+	643452761[label="Operacion: Generacion del Reporte del Arbol de Archivos de la carpeta /\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:27"];
+
+	780640503[label="Operacion: Generacion del Reporte de la Bitacora de la Aplicacion\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:24"];
+
+	1541965201[label="Operacion: Generacion del Reporte Tabla Hash\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:20"];
+
+	1350120932[label="Operacion: Generacion del Reporte de la Bitacora de la Aplicacion\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:38:03"];
+
+	460211370[label="Operacion: Generacion del Reporte de la Bitacora de la Aplicacion\nUsuario: Lolazo\nTimeStamp: 16-11-2019::01:37:57"];
 
 
+	645032495->1807496069->643452761->780640503->1541965201->1350120932->460211370;
 
-1289696681:C0->1285044316;
-
-1289696681:C0->1588970020;
-
-1285044316:C0->1607460018;
-
-1285044316:C0->1811075214;
-
-1588970020:C0->1407343478;
-
-	label = "AVL de Archivos"}
+	label = "Log - Bitácora"}

@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.ErrorUs;
 import Clases.Usuario;
 import Nodos.NodoAVL;
 import Nodos.NodoMatriz;
@@ -30,24 +31,25 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import javafx.util.Pair;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import static proyecto2_2.ControllerTableView.Fx2;
 import static proyecto2_2.ControllerTilesView.Fx3;
@@ -65,7 +67,6 @@ public class Controller implements Initializable {
      * Initializes the controller class.
      */
     
-    @FXML private Button btn;
     @FXML private Pane secPane;
     @FXML private TreeView<String> treeview;
     @FXML private Label label;
@@ -196,12 +197,100 @@ public class Controller implements Initializable {
     
     @FXML
     private void CargaMasiva(MouseEvent ect) {
-        
+        if(Proyecto2_2.actual.usuario.equals("Admin")) {
+            int si = 0;
+            ObservableList<ErrorUs> dataNo = FXCollections.observableArrayList();
+            
+            File workingD = new File(System.getProperty("user.dir"));
+            Stage st = (Stage) btnCargarA.getScene().getWindow();
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("csv files", "*.csv");
+            
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Carga Masiva Usuarios");
+            fc.setInitialDirectory(workingD);
+            fc.getExtensionFilters().add(filter);
+            File f = fc.showOpenDialog(st);
+            
+            if(f != null) {
+                BufferedReader bf;
+                try {
+                    bf = new BufferedReader(new FileReader(f));
+                    String line = bf.readLine();
+                    line = bf.readLine();
+                    while(line != null) {
+                        String[] u1 = line.split(",");
+                        if(u1.length == 2) {
+                            String s1 = u1[0];
+                            String s2 = u1[1];
+                            if(s2.length() >= 8) {
+                                Usuario temp = Proyecto2_2.usuarios.buscar(s1);
+                                if(temp == null) {
+                                    Proyecto2_2.usuarios.insertar(s1, s2);
+                                    si++;
+                                } else {
+                                    dataNo.add(new ErrorUs(s1,"Usuario ya existe"));
+                                }
+                            } else {
+                                dataNo.add(new ErrorUs(s1,"Contraseña \"" + s2 + "\" es menor a 8 caracteres"));
+                            }
+                        }
+                        line = bf.readLine();
+                    }
+                    bf.close();
+                    
+                    Dialog n = new Dialog();
+                    n.setTitle("Carga Usuarios");
+                    n.setHeaderText("No. usuarios ingresados: " + si);
+                    
+                    if(!dataNo.isEmpty()) {
+                        TableView table = new TableView();
+                        table.setEditable(true);
+                        
+                        TableColumn<String, ErrorUs> c1 = new TableColumn<>("Usuario");
+                        c1.setPrefWidth(100);
+                        c1.setCellValueFactory(new PropertyValueFactory<>("us"));
+                        
+                        TableColumn<String, ErrorUs> c2 = new TableColumn<>("Error");
+                        c2.setCellValueFactory(new PropertyValueFactory<>("err"));
+                        c2.setPrefWidth(300);
+                        
+                        table.getColumns().clear();
+                        table.getColumns().addAll(c1,c2);
+                        table.getItems().addAll(dataNo);
+                        
+                        GridPane g = new GridPane();
+                        g.add(new Label("ERRORES:"), 1, 1);
+                        g.add(table, 1, 2);
+                        n.getDialogPane().setContent(g);
+                    }
+                    n.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                    n.showAndWait();
+                    Proyecto2_2.log.Push("Carga masiva de usuarios.=" + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } else {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Usuario Incorrecto");
+            a.setHeaderText("Solo Admin puede realizar la operacion");
+            a.showAndWait();
+        }
     }
     
     @FXML
     private void Reportes(MouseEvent evt) {
-        
+        try {
+            FXMLLoader fxml = new FXMLLoader(getClass().getResource("Reportes.fxml"));
+            Parent root = (Parent) fxml.load();
+            Stage stgo = new Stage(StageStyle.DECORATED);
+            stgo.setResizable(false);
+            stgo.setTitle("Reportes");
+            stgo.setScene(new Scene(root));
+            stgo.show();
+        } catch(Exception e) {
+            System.out.println("Error al ccargar ventana de reportes");
+        }
     }
     
     @FXML
@@ -265,7 +354,7 @@ public class Controller implements Initializable {
             g.add(ta1, 2, 2);
             dilog.getDialogPane().setContent(g);
 
-            ButtonType buttonType = new ButtonType("Modificar", ButtonData.OK_DONE);
+            ButtonType buttonType = new ButtonType("Crear", ButtonData.OK_DONE);
             dilog.getDialogPane().getButtonTypes().addAll(buttonType,ButtonType.CANCEL);
             
             dilog.setResultConverter(new Callback<ButtonType, String[]>() {
@@ -317,6 +406,7 @@ public class Controller implements Initializable {
                                 a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
                                 a.showAndWait();
                                 Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
+                                Proyecto2_2.log.Push("Archivo creado: " + res.get()[0], Proyecto2_2.actual.usuario);
                             }
                         }
                         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -515,7 +605,6 @@ public class Controller implements Initializable {
                                     }
                                 }
                             }
-                            System.out.println(s1 + " - " + s2);
                         }
                         line = bf.readLine();
                     }
@@ -585,7 +674,7 @@ public class Controller implements Initializable {
                     } else {
                         Alert a = new Alert(Alert.AlertType.WARNING);
                         a.setTitle("Usuario Invalido");
-                        a.setContentText("El usuario solicitao no existe");
+                        a.setContentText("El usuario solicitado no existe");
                         a.showAndWait();
                     }
                 } else {

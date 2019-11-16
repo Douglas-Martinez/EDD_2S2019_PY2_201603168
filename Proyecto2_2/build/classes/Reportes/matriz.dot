@@ -8,67 +8,51 @@ digraph matriz {
 
 	0001000[label="Matriz", style="filled", fontcolor="white", color="black"];
 
-	183264084[label="/", style="solid"];
-	476402209[label="Dana", style="solid"];
-	1490180672[label="Imagenes", style="solid"];
-	460332449[label="Imagenes2", style="solid"];
-	1919892312[label="Lol", style="solid"];
-	1143839598[label="Packs", style="solid"];
-	250075633[label="Proyecto", style="solid"];
+	2075122755[label="/", style="solid"];
+	962356381[label="EDD", style="solid"];
+	1915891733[label="Proyectos", style="solid"];
+	463878079[label="Reportes", style="solid"];
+	518958412[label="Semestre1", style="solid"];
 
-	358699161[label="/", style="solid"];
-	517938326[label="Dana", style="solid"];
-	914424520[label="Imagenes", style="solid"];
-	110718392[label="Imagenes2", style="solid"];
-	425918570[label="Lol", style="solid"];
-	2143192188[label="Packs", style="solid"];
-	1100439041[label="Proyecto", style="solid"];
+	1154239104[label="/", style="solid"];
+	664631444[label="EDD", style="solid"];
+	221030423[label="Proyectos", style="solid"];
+	1715728435[label="Reportes", style="solid"];
+	1081945649[label="Semestre1", style="solid"];
 
-	204349222[label="/", style="filled"];
-	231685785[label="/Lol", style="filled"];
-	114935352[label="/Proyecto", style="filled"];
-	2110121908[label="Lol/Imagenes", style="filled"];
-	32374789[label="Lol/Imagenes2", style="filled"];
-	1973538135[label="Lol/Packs", style="filled"];
-	1023487453[label="Packs/Dana", style="filled"];
+	216577906[label="/", style="filled"];
+	1684851432[label="/Proyectos", style="filled"];
+	500661310[label="/Reportes", style="filled"];
+	888325395[label="EDD/Semestre1", style="filled"];
+	2112399320[label="Proyectos/EDD", style="filled"];
 
-	0001000 -> 183264084[dir=both];
-	183264084 -> 476402209[dir=both];
-	476402209 -> 1490180672[dir=both];
-	1490180672 -> 460332449[dir=both];
-	460332449 -> 1919892312[dir=both];
-	1919892312 -> 1143839598[dir=both];
-	1143839598 -> 250075633[dir=both];
+	0001000 -> 2075122755[dir=both];
+	2075122755 -> 962356381[dir=both];
+	962356381 -> 1915891733[dir=both];
+	1915891733 -> 463878079[dir=both];
+	463878079 -> 518958412[dir=both];
 
-	0001000 -> 358699161[dir=both];
-	358699161 -> 517938326[dir=both];
-	517938326 -> 914424520[dir=both];
-	914424520 -> 110718392[dir=both];
-	110718392 -> 425918570[dir=both];
-	425918570 -> 2143192188[dir=both];
-	2143192188 -> 1100439041[dir=both];
+	0001000 -> 1154239104[dir=both];
+	1154239104 -> 664631444[dir=both];
+	664631444 -> 221030423[dir=both];
+	221030423 -> 1715728435[dir=both];
+	1715728435 -> 1081945649[dir=both];
 
-	183264084 -> 204349222[dir=both];
-	476402209 -> 1023487453[dir=both];
-	1490180672 -> 2110121908[dir=both];
-	460332449 -> 32374789[dir=both];
-	1919892312 -> 231685785[dir=both];
-	1143839598 -> 1973538135[dir=both];
-	250075633 -> 114935352[dir=both];
+	2075122755 -> 216577906[dir=both];
+	962356381 -> 2112399320[dir=both];
+	1915891733 -> 1684851432[dir=both];
+	463878079 -> 500661310[dir=both];
+	518958412 -> 888325395[dir=both];
 
-	358699161 -> 204349222[constraint=false, dir=both];
-	204349222 -> 231685785[contraint=false, dir=both];
-	231685785 -> 114935352[contraint=false, dir=both];
-	425918570 -> 2110121908[constraint=false, dir=both];
-	2110121908 -> 32374789[contraint=false, dir=both];
-	32374789 -> 1973538135[contraint=false, dir=both];
-	2143192188 -> 1023487453[constraint=false, dir=both];
-	{ rank=same; 0001000; 183264084; 476402209; 1490180672; 460332449; 1919892312; 1143839598; 250075633;  }
-	{ rank=same; 358699161; 204349222; 231685785; 114935352; }
-	{ rank=same; 517938326; }
-	{ rank=same; 914424520; }
-	{ rank=same; 110718392; }
-	{ rank=same; 425918570; 2110121908; 32374789; 1973538135; }
-	{ rank=same; 2143192188; 1023487453; }
-	{ rank=same; 1100439041; }
+	1154239104 -> 216577906[constraint=false, dir=both];
+	216577906 -> 1684851432[contraint=false, dir=both];
+	1684851432 -> 500661310[contraint=false, dir=both];
+	664631444 -> 888325395[constraint=false, dir=both];
+	221030423 -> 2112399320[constraint=false, dir=both];
+	{ rank=same; 0001000; 2075122755; 962356381; 1915891733; 463878079; 518958412;  }
+	{ rank=same; 1154239104; 216577906; 1684851432; 500661310; }
+	{ rank=same; 664631444; 888325395; }
+	{ rank=same; 221030423; 2112399320; }
+	{ rank=same; 1715728435; }
+	{ rank=same; 1081945649; }
 	label = "Matriz de Archivos"}

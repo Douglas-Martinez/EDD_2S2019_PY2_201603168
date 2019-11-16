@@ -28,6 +28,7 @@ public class Proyecto2_2 extends Application {
     public static TablaHash usuarios = new TablaHash();
     public static Pila log = new Pila();
     public static Usuario actual;
+    public static String img;
     
     //Transiciones
     public static String carpeta;
@@ -53,51 +54,17 @@ public class Proyecto2_2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //usuarios.insertar("Admin", "Admin");
-        /*
-        MatrizDispersa sm = new MatrizDispersa("Yo");
-        sm.insertar("/", "Lol");
-        sm.insertar("/", "Proyecto");
-        sm.insertar("Lol", "Imagenes");
-        sm.insertar("Lol", "Imagenes2");
-        sm.insertar("Lol", "Packs");
-        sm.insertar("Packs", "Dana");
-        sm.graficar();
-        sm.graficarGrafo();
-        */
-        /*
-        AVL a = new AVL();
-        a.insertar("alv.tugefa","Contenido1","YO");
-        a.insertar("alv.tuputamadre","Contenido2","YOx2");
-        a.insertar("boynas","Contenido3","Pito");
-        a.insertar("caca.kk","Cacaroto","Goku");
-        a.insertar("julio.txt","pack","Tu");
-        a.insertar("putas.harry","putas","peluca");
-        a.insertar("date.puto","loco","Crazy");
-        a.graficar();
-        */
-        /*
-        log.Push("Inicio de Sesion", "ALV");
-        log.Push("Crear Archivo", "ALV");
-        log.Push("Crear Carpeta", "ALV");
-        for(int i = 0; i < 32000; i++) {}
-        log.Push("Eliminar Archivo", "ALV");
-        log.Push("Modificar Carpeta", "ALV");
-        log.Push("Cierre de Sesion", "ALV");
-        for(int i = 0; i < 640000; i++) {}
-        log.Push("Inicio de Sesion", "Pito");
-        log.Push("Eliminar Archivo", "Pito");
-        log.Push("Modificar Carpeta", "Pito");
-        log.Push("Cierre de Sesion", "Pito");
-        log.graficar();
-        */
+        boolean insertar;
+        
+        usuarios.insertar("Admin", "Admin");
+        //actual = usuarios.buscar("Admin");
+        
         usuarios.insertar("Lolazo", "12345678");
         usuarios.buscar("Lolazo").matrix.insertar("/", "Proyectos");
         usuarios.buscar("Lolazo").matrix.insertar("/", "Reportes");
         usuarios.buscar("Lolazo").matrix.insertar("Proyectos", "EDD");
         usuarios.buscar("Lolazo").matrix.insertar("EDD", "Semestre1");
-        
-        boolean insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tugefa","Contenido1","Lolazo");
+        insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tugefa","Contenido1","Lolazo");
         insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.tuputamadre","Contenido2","YOx2");
         insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("boynas","Contenido3","Pito");
         insertar = usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("caca.kk","Cacaroto","Goku");
@@ -109,15 +76,8 @@ public class Proyecto2_2 extends Application {
         insertar = usuarios.buscar("Alv").matrix.buscar("/", "/").archivos.insertar("julio.txt", "qwertyuiop", "zxcvbnm");
         
         actual = usuarios.buscar("Lolazo");
-        //usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.listInOrder(usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.root, 0);
-        //System.out.println("");
-        /*
-        usuarios.insertar("Noobmaster69", "ElThortas");
-        usuarios.insertar("Ana Morales", "Anabanana");
-        usuarios.insertar("Pikachu", "yoteelijo");
-        usuarios.insertar("Tu y Yo", "y Zaboomafoo");
-        //usuarios.graficar();
-        */
+        
+        
         launch(args);
     }
 }

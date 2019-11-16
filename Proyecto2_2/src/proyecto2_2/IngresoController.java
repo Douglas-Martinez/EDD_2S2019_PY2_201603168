@@ -52,11 +52,11 @@ public class IngresoController implements Initializable {
                 if(us.password.equals(pass)) {
                     Proyecto2_2.actual = us;
                     //Open new ADMIN Stage
-                    FXMLLoader fxml = new FXMLLoader(getClass().getResource("Scene.fxml"));
+                    FXMLLoader fxml = new FXMLLoader(getClass().getResource("Scene_Admin.fxml"));
                     Parent root = (Parent) fxml.load();
                     Stage stgo = new Stage(StageStyle.DECORATED);
                     stgo.setResizable(false);
-                    stgo.setTitle("EDD DRIVE");
+                    stgo.setTitle("EDD DRIVE - Admin");
                     stgo.setScene(new Scene(root));
                     stgo.show();
                     Proyecto2_2.log.Push("Inicio de Sesion", user);

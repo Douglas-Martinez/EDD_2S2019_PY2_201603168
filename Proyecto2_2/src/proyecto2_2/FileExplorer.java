@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.FileInfo;
 import Nodos.NodoFila;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

@@ -1,22 +1,16 @@
 digraph grafo {
 	"/"[label="/"];
-	"Dana"[label="Dana"];
-	"Imagenes"[label="Imagenes"];
-	"Imagenes2"[label="Imagenes2"];
-	"Lol"[label="Lol"];
-	"Packs"[label="Packs"];
-	"Proyecto"[label="Proyecto"];
-	"/"->"Lol";
-	"/"->"Proyecto";
+	"EDD"[label="EDD"];
+	"Proyectos"[label="Proyectos"];
+	"Reportes"[label="Reportes"];
+	"Semestre1"[label="Semestre1"];
+	"/"->"Proyectos";
+	"/"->"Reportes";
 
+	"EDD"->"Semestre1";
 
+	"Proyectos"->"EDD";
 
-
-	"Lol"->"Imagenes";
-	"Lol"->"Imagenes2";
-	"Lol"->"Packs";
-
-	"Packs"->"Dana";
 
 
 	label = "Grafo de Carpetas";

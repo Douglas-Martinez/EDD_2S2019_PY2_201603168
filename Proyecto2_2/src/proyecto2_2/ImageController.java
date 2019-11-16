@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,7 +31,9 @@ public class ImageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            imgView.setImage(new Image(new FileInputStream("./src/Reportes/tablaHash.png")));
+            imgView = new ImageView();
+            imgView.setImage(new Image(Proyecto2_2.img));
+            imgView.autosize();
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }

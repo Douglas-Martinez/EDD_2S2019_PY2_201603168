@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.FileInfo;
 import Nodos.NodoFila;
 import Nodos.NodoMatriz;
 import javafx.scene.control.TableColumn;
