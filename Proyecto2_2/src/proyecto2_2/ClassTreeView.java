@@ -42,16 +42,18 @@ public class ClassTreeView extends FileExplorerFx {
         int pos = 0;
         
         for(int j = 0; j < fnf.length; j++) {
+            String[] t = fnf[j].nombre.split("/");
+            String no = t[t.length - 1];
             if(n==0) {
-                A[pos] =new TreeItem<>(fnf[j].nombre, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
+                A[pos] =new TreeItem<>(no, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
                 pos++;
             } else if(n > 0) {
-                A[pos] =new TreeItem<>(fnf[j].nombre, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
+                A[pos] =new TreeItem<>(no, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
                 try {
                     A[pos].getChildren().addAll(TreeCreate(fnf[j]));
                     pos++;
                 } catch(Exception e) {
-                    System.out.println("Exception treecreate " + fnf[j].nombre + ", " + e.getMessage());
+                    System.out.println("Exception treecreate " + no + ", " + e.getMessage());
                 }
             }
         }
@@ -75,6 +77,7 @@ public class ClassTreeView extends FileExplorerFx {
     @Override
     public void CreateTreeView(TreeView<String> treeview) {
         NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar("/");
+        
         int cont = nf.Contar();
         if(cont > 0) {
             NodoFila[] fnf = new NodoFila[cont];
@@ -90,7 +93,9 @@ public class ClassTreeView extends FileExplorerFx {
             TreeItem<String> raiz = new TreeItem<>("/", new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
             TreeItem<String>[] sig = new TreeItem[cont];
             for(int j = 0; j < fnf.length; j++) {
-                sig[j] = new TreeItem<>(fnf[j].nombre, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
+                String[] t = fnf[j].nombre.split("/");
+                String no = t[t.length - 1];
+                sig[j] = new TreeItem<>(no, new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png"))));
                 try {
                     sig[j].getChildren().addAll(TreeCreate(fnf[j]));
                 } catch(Exception e) {

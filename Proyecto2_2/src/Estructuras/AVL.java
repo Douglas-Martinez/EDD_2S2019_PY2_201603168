@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import proyecto2_2.Proyecto2_2;
 
 /**
  *

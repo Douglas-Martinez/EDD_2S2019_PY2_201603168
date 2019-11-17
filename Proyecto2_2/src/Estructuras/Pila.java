@@ -9,6 +9,7 @@ import Nodos.NodoPila;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import proyecto2_2.Proyecto2_2;
 
 /**
  *

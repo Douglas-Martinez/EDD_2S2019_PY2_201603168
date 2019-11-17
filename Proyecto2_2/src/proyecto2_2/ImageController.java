@@ -5,16 +5,15 @@
  */
 package proyecto2_2;
 
+import java.awt.Desktop;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 
 /**
  * FXML Controller class
@@ -26,16 +25,22 @@ public class ImageController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    @FXML private ImageView imgView;
+    @FXML private static ImageView imgView;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            imgView = new ImageView();
-            imgView.setImage(new Image(Proyecto2_2.img));
-            imgView.autosize();
+            //imgView.setId("");
+            Desktop d = Desktop.getDesktop();
+            File f = new File("src/"+Proyecto2_2.img);
+            d.open(f);
+            imgView.setId(null);
+            imgView.setImage(null);
+            imgView.setImage(new Image(ClassLoader.getSystemResourceAsStream(Proyecto2_2.img)));
+            //imgView.setImage(new Image(Proyecto2_2.img));
+            Proyecto2_2.contIm++;
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error al iniciar la imagen " + e.getMessage());
         }
     }
 }

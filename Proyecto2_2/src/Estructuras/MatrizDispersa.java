@@ -155,9 +155,15 @@ public class MatrizDispersa {
                     if(auxM.padre.equals("/") && auxM.hijo.equals("/")) {
                         escribir.println("\t" + auxM.hashCode()+"[label=\"/\", style=\"filled\"];");
                     } else if(auxM.padre.equals("/")) {
-                        escribir.println("\t" + auxM.hashCode()+"[label=\"/"+auxM.hijo+"\", style=\"filled\"];");
+                        String[] m = auxM.hijo.split("/");
+                        String n = m[m.length - 1];
+                        escribir.println("\t" + auxM.hashCode()+"[label=\"/ "+n+"\", style=\"filled\"];");
                     } else {
-                        escribir.println("\t" + auxM.hashCode()+"[label=\""+auxM.padre+"/"+auxM.hijo+"\", style=\"filled\"];");
+                        String[] m1 = auxM.padre.split("/");
+                        String n1 = m1[m1.length - 1];
+                        String[] m2 = auxM.hijo.split("/");
+                        String n2 = m2[m2.length - 1];
+                        escribir.println("\t" + auxM.hashCode()+"[label=\""+n1+" / "+n2+"\", style=\"filled\"];");
                     }
                     auxM = auxM.derecha;
                 }

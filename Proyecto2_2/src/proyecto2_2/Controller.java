@@ -5,6 +5,7 @@
  */
 package proyecto2_2;
 
+import Clases.ArchivoIn;
 import Clases.ErrorUs;
 import Clases.Usuario;
 import Nodos.NodoAVL;
@@ -82,24 +83,19 @@ public class Controller implements Initializable {
         count = 0;
         Fx1 = new ClassTreeView();
 
-        Fx1.CurrDirStr = "/";
-        Fx1.CurrDirName = "/";
         Proyecto2_2.padre = "/";
         Proyecto2_2.carpeta = "/";
         Fx1.lbl = label;
         Fx2.lbl = label;
-        label.setText(Fx1.CurrDirStr);
+        label.setText(Proyecto2_2.carpeta);
         try {
             Pane newLoadedPane = FXMLLoader.load(getClass().getResource("Scene2.fxml"));
             secPane.getChildren().add(newLoadedPane);
-        } catch(NullPointerException e) {
-            e.printStackTrace();
-        } catch(IOException e) { 
-            e.printStackTrace();
+        } catch(NullPointerException | IOException e) { 
+            System.out.println("Error al cargar la scene2: "+e.getMessage());
         }
         Fx1.CreateTreeView(treeview);
         handle();
-        Fx2.CurrDirStr = "";
     }
 
     @FXML
@@ -107,24 +103,28 @@ public class Controller implements Initializable {
         if(mouseEvent.getClickCount() == 1){
             try {
                 TreeItem<String> item = treeview.getSelectionModel().getSelectedItem();
-                Proyecto2_2.carpeta = item.getValue();
-                if(item.getParent() == null) {
-                    Proyecto2_2.padre = null;
-                } else {
-                    Proyecto2_2.padre = item.getParent().getValue();
+                if(item != null) {
+                    String s1 = Fx1.FindAbsolutePath(item, item.getValue());
+                    String s2;
+                    if(item.getParent() == null) {
+                        s2 = "/";
+                        Proyecto2_2.padre = s2;
+                    } else {
+                        s2 = Fx1.FindAbsolutePath(item.getParent(), item.getParent().getValue());
+                        Proyecto2_2.padre = s2;
+                    }
+                    Proyecto2_2.carpeta = s1;
+
+                    System.out.println("Selected Tree Dir : " + item.getValue());
+                    label.setText(Proyecto2_2.carpeta);
+                    Fx2.tableview.getItems().clear();
+                    Fx2.CreateTableView();
+                    if(Fx3 != null) {
+                        Fx3.CreateTiles();
+                    }
+                    Proyecto2_2.selC = null;
+                    Proyecto2_2.selA = null;
                 }
-                Fx1.CurrDirName = item.getValue();
-                System.out.println("Selected Text : " + item.getValue());
-                Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
-                Fx2.CurrDirStr = Fx1.CurrDirStr;
-                label.setText(Fx1.CurrDirStr);
-                Fx2.tableview.getItems().clear();
-                Fx2.CreateTableView();
-                if(Fx3 != null) {
-                    Fx3.CreateTiles();
-                }
-                Proyecto2_2.selC = null;
-                Proyecto2_2.selA = null;
             } catch(Exception x) {
                 System.out.println(x.getMessage());
             }
@@ -134,21 +134,21 @@ public class Controller implements Initializable {
     private void handle() {
         try {
             TreeItem<String> item = treeview.getRoot();
+            
+            String s1 = Fx1.FindAbsolutePath(item, item.getValue());
+            String s2;
             Proyecto2_2.carpeta = item.getValue();
             if(item.getParent() == null) {
-                Proyecto2_2.padre = null;
+                s2 = "/";
+                Proyecto2_2.padre = "/";
             } else {
+                s2 = Fx1.FindAbsolutePath(item.getParent(), item.getParent().getValue());
                 Proyecto2_2.padre = item.getParent().getValue();
             }
-            Fx1.CurrDirName = item.getValue();
-            if(Fx1.CurrDirName.equals("/")) {
-                label.setText("/");
-            } else {
-                label.setText("/"+Fx1.CurrDirStr);
-                Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
-                Fx2.CurrDirStr = Fx1.CurrDirStr;
-            }
-            Fx1.CurrDirStr = Fx1.FindAbsolutePath(item,item.getValue());
+            Proyecto2_2.carpeta = s1;
+            
+            label.setText(Proyecto2_2.carpeta);
+            
             Fx2.tableview.getItems().clear();
             Fx2.CreateTableView();
             if(Fx3 != null) {
@@ -310,8 +310,38 @@ public class Controller implements Initializable {
                     a.setContentText("El nombre de la carpeta no puede estar vacio");
                     Proyecto2_2.log.Push("Fallo al crear carpeta: Nobre Vacio", Proyecto2_2.actual.usuario);
                 } else {
-                    Proyecto2_2.actual.matrix.insertar(Proyecto2_2.carpeta, r.get());
-                    Proyecto2_2.log.Push("Crear carpeta: " + r.get(), Proyecto2_2.actual.usuario);
+                    NodoMatriz bus;
+                    if(Proyecto2_2.carpeta.equals("/")) {
+                        bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+r.get());
+                    } else {
+                        bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+r.get());
+                    }
+                    if(bus == null) {
+                        if(Proyecto2_2.carpeta.equals("/")) {
+                            Proyecto2_2.actual.matrix.insertar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+r.get());
+                        } else {
+                            Proyecto2_2.actual.matrix.insertar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+r.get());
+                        }
+                        Proyecto2_2.log.Push("Crear carpeta: " + r.get(), Proyecto2_2.actual.usuario);
+                    } else {
+                        String mas = "_";
+                        while(bus != null) {
+                            if(Proyecto2_2.carpeta.equals("/")) {
+                                bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+r.get()+mas);
+                            } else {
+                                bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+r.get()+mas);
+                            }
+                            if(bus != null) {
+                                mas += "_";
+                            }
+                        }
+                        if(Proyecto2_2.carpeta.equals("/")) {
+                            Proyecto2_2.actual.matrix.insertar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+r.get()+mas);
+                        } else {
+                            Proyecto2_2.actual.matrix.insertar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+r.get()+mas);
+                        }
+                        Proyecto2_2.log.Push("Crear carpeta: " + r.get()+mas, Proyecto2_2.actual.usuario);
+                    }
                     Fx1.CreateTreeView(treeview);
                     Fx2.tableview.getItems().clear();
                     Fx2.CreateTableView();
@@ -529,6 +559,7 @@ public class Controller implements Initializable {
     @FXML
     private void EliminarA(MouseEvent evt) {
         if(Proyecto2_2.selA != null) {
+            String n = selA.nombre;
             NodoMatriz nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.selA.padre, Proyecto2_2.selA.hijo);
             nm.archivos.eliminar(Proyecto2_2.selA.nombre);
             
@@ -536,7 +567,7 @@ public class Controller implements Initializable {
             a.setTitle("Operacion Exitosa");
             a.setHeaderText("Archivo eliminado con exito");
             a.showAndWait();
-            Proyecto2_2.log.Push("Elimino el archivo: " + Proyecto2_2.selA.nombre, Proyecto2_2.actual.usuario);
+            Proyecto2_2.log.Push("Elimino el archivo: " + n, Proyecto2_2.actual.usuario);
             
             Fx2.tableview.getItems().clear();
             Fx2.CreateTableView();
@@ -557,6 +588,8 @@ public class Controller implements Initializable {
     @FXML
     private void CargarA(MouseEvent evt) {
         if(Proyecto2_2.carpeta != null) {
+            ObservableList<ArchivoIn> dataSi = FXCollections.observableArrayList();
+            
             File workingD = new File(System.getProperty("user.dir"));
             Stage st = (Stage) btnCargarA.getScene().getWindow();
             FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("csv files", "*.csv");
@@ -597,11 +630,13 @@ public class Controller implements Initializable {
                                 boolean acc = nm.archivos.insertar(s1, s2, Proyecto2_2.actual.usuario);
                                 if(acc == true) {
                                     Proyecto2_2.log.Push("Archivo creado mediante carga masiva: " + s1, Proyecto2_2.actual.usuario);
+                                    dataSi.add(new ArchivoIn(s1,s2));
                                 } else {
                                     NodoAVL sob = nm.archivos.buscar(s1);
                                     if(sob != null) {
                                         sob.contenido = s2;
                                         Proyecto2_2.log.Push("Sobreescritura del Archivo mediante carga masiva: " + sob.nombre, Proyecto2_2.actual.usuario);
+                                        dataSi.add(new ArchivoIn(s1,"Sobreescrito => "+s2));
                                     }
                                 }
                             }
@@ -609,11 +644,35 @@ public class Controller implements Initializable {
                         line = bf.readLine();
                     }
                     bf.close();
-                    Alert a = new Alert(Alert.AlertType.INFORMATION);
-                    a.setTitle("Carga de Archivos");
-                    a.setHeaderText("Carga de Archivos completada");
-                    a.showAndWait();
-                    Proyecto2_2.log.Push("Carga masiva realizada en la carpeta " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
+                    
+                    Dialog d = new Dialog();
+                    d.setTitle("Carga de Archivos");
+                    d.setHeaderText("Archivos Ingresados");
+                    
+                    if(!dataSi.isEmpty()) {
+                        TableView table = new TableView();
+                        table.setEditable(true);
+                        
+                        TableColumn<String, ArchivoIn> c1 = new TableColumn<>("Nombre");
+                        c1.setPrefWidth(150);
+                        c1.setCellValueFactory(new PropertyValueFactory<>("nom"));
+                        
+                        TableColumn<String, ArchivoIn> c2 = new TableColumn<>("Contenido");
+                        c2.setPrefWidth(300);
+                        c2.setCellValueFactory(new PropertyValueFactory<>("cont"));
+                        
+                        table.getColumns().clear();
+                        table.getColumns().addAll(c1,c2);
+                        table.getItems().addAll(dataSi);
+                        
+                        GridPane g = new GridPane();
+                        g.add(table, 0, 0);
+                        d.getDialogPane().setContent(g);
+                    }
+                    d.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                    d.showAndWait();
+                    
+                    Proyecto2_2.log.Push("Carga masiva de archivos realizada en la carpeta " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
                     Fx2.tableview.getItems().clear();
                     Fx2.CreateTableView();
                     if(Fx3 != null) {
@@ -698,7 +757,8 @@ public class Controller implements Initializable {
     @FXML
     private void DescargarA(MouseEvent evt) {
         if(Proyecto2_2.selA != null) {
-            String nombre = "src/Descargas/" + Proyecto2_2.selA.nombre;
+            String nombre = "./Descargas/" + Proyecto2_2.selA.nombre;
+            //String nombre = Proyecto2_2.selA.nombre;
             PrintWriter escribir;
             try {
                 escribir = new PrintWriter(new BufferedWriter(new FileWriter(nombre)));

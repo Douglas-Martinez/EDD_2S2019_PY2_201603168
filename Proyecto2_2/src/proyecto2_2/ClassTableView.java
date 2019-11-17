@@ -41,22 +41,22 @@ public class ClassTableView extends FileExplorerFx {
 
     @Override
     public void CreateTableView() {
-        if((CurrDirName == null) || CurrDirName.equals("")) {
-            CurrDirName = "/";
-        }
-        NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar(CurrDirName);
+        NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar(Proyecto2_2.carpeta);
         NodoMatriz nm;
+        
         if(Proyecto2_2.padre == null) {
             nm = Proyecto2_2.actual.matrix.buscar("/", Proyecto2_2.carpeta);
         } else {
             nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.padre, Proyecto2_2.carpeta);
         }
+        
         int conA = nf.Contar();
         nm.archivos.linealizar();
         NodoAVL[] lna = new NodoAVL[nm.archivos.lista.size()];
         for(int q = 0; q < lna.length; q++) {
             lna[q] = nm.archivos.lista.get(q);
         }
+        
         NodoFila[] lnf = new NodoFila[conA];
         NodoMatriz auxM = nf.der;
         int aux = 0;
@@ -67,6 +67,7 @@ public class ClassTableView extends FileExplorerFx {
             }
             auxM = auxM.derecha;
         }
+        
         ObservableList<FileInfo> lista;
         FileInfo[] sts = new FileInfo[conA + lna.length];
         for(int w = 0; w < sts.length; w++) {
@@ -76,8 +77,10 @@ public class ClassTableView extends FileExplorerFx {
             ImageView img = null;
             try {
                 if(w < conA) {
+                    String[] t = lnf[w].nombre.split("/");
+                    String no = t[t.length - 1];
                     img = new ImageView(new Image(ClassLoader.getSystemResourceAsStream("img/folder.png")));
-                    s1 = lnf[w].nombre;
+                    s1 = no;
                     NodoMatriz tmp;
                     if(padre == null) {
                         tmp = actual.matrix.buscar("/", carpeta);

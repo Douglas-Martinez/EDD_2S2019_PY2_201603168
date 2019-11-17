@@ -62,6 +62,6 @@ public abstract class FileExplorerFx implements FileExplorer{
     
     @Override
     public void setLabelTxt() {
-        lbl.setText(CurrDirStr);
+        lbl.setText(Proyecto2_2.carpeta);
     }
 }

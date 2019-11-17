@@ -18,9 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import javafx.scene.Node;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
@@ -39,26 +36,22 @@ public class ClassTilesView extends FileExplorerFx{
 
     @Override
     public void CreateTiles() {
-        NodoFila nf;
-        if((CurrDirName == null)|| (CurrDirName.equals(""))) {
-            CurrDirName = "/";
-            nf = Proyecto2_2.actual.matrix.padres.buscar("/");
-        } else {
-            nf = Proyecto2_2.actual.matrix.padres.buscar(CurrDirName);
-        }
+        NodoFila nf = Proyecto2_2.actual.matrix.padres.buscar(carpeta);
         NodoMatriz nm;
+        
         if(Proyecto2_2.padre == null) {
             nm = Proyecto2_2.actual.matrix.buscar("/", carpeta);
         } else {
             nm = Proyecto2_2.actual.matrix.buscar(padre, carpeta);
         }
-        int conA = nf.Contar();
-        nm.archivos.linealizar();
         
+        nm.archivos.linealizar();
         NodoAVL[] nal = new NodoAVL[nm.archivos.lista.size()];
         for(int q = 0; q < nal.length; q++) {
             nal[q] = nm.archivos.lista.get(q);
         }
+        
+        int conA = nf.Contar();
         NodoFila[] nfl = new NodoFila[conA];
         NodoMatriz auxM = nf.der;
         int aux = 0;
@@ -73,33 +66,30 @@ public class ClassTilesView extends FileExplorerFx{
         FileInfo[] sts = new FileInfo[conA + nal.length];
         for(int e = 0; e < sts.length; e++) {
             String nombre = "";
-            String date = "";
             String tipo = "";
             ImageView img = null;
             try {
                 if(e < conA) {
+                    String[] t = nfl[e].nombre.split("/");
+                    String no = t[t.length - 1];
                     img = new ImageView(new Image("img/folder.png"));
-                    nombre = nfl[e].nombre;
+                    nombre = no;
                     NodoMatriz tmp;
                     if(padre == null) {
                         tmp = actual.matrix.buscar("/", carpeta);
                     } else {
                         tmp = actual.matrix.buscar(padre, carpeta);
                     }
-                    if(tmp != null) {
-                        date = tmp.fecha;
-                    }
                     tipo = "C";
                 } else {
                     img = new ImageView(new Image("img/icon.png"));
                     nombre = nal[e-conA].nombre;
-                    date = nal[e-conA].timestamp;
                     tipo = "A";
                 }
             } catch(Exception exc) {
                 System.out.println("Exception building tiles, " + exc.getMessage());
             }
-            sts[e] = new FileInfo(img,nombre,date,tipo);
+            sts[e] = new FileInfo(img,nombre,"--:--:--",tipo);
         }
         
         tilePane.getChildren().clear();
@@ -113,6 +103,8 @@ public class ClassTilesView extends FileExplorerFx{
             virbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent evt) {
+                    Proyecto2_2.selC = null;
+                    Proyecto2_2.selA = null;
                     if(evt.getClickCount() == 1) {
                         for(Node v: tilePane.getChildren()) {
                             for(Node b: ((VBox)v).getChildren()) {
@@ -127,14 +119,18 @@ public class ClassTilesView extends FileExplorerFx{
                         String nom = noml[noml.length - 1];
                         
                         NodoMatriz aux;
+                        if(padre == null || padre.equals("/")) {
+                            aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+str);
+                        } else {
+                            aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+"/"+str);
+                        }
                         if(nom.equals("folder.png")) {
-                            aux = Proyecto2_2.actual.matrix.buscar(carpeta, str);
                             if(aux != null) {
                                 Proyecto2_2.selC = aux;
                                 System.out.println("Carpeta Seleccionada: " + Proyecto2_2.selC.hijo);
                             }
                         } else if(nom.equals("icon.png")) {
-                            if(padre == null) {
+                            if(padre == null || padre.equals("/")) {
                                 aux = Proyecto2_2.actual.matrix.buscar("/", carpeta);
                             } else {
                                 aux = Proyecto2_2.actual.matrix.buscar(padre, carpeta);
@@ -149,29 +145,26 @@ public class ClassTilesView extends FileExplorerFx{
                         }
                     } else if(evt.getClickCount() == 2){
                         String str = virbox.getId();
-                        System.out.println("Presionado " + str);
-                        String str1 = CurrDirStr + "/" + str;
-                        System.out.println(str1);
                         String[] noml = ((Image)((ImageView)virbox.getChildren().get(0)).getImage()).impl_getUrl().split("/");
                         String nom = noml[noml.length - 1];
+                        
                         if(nom.equals("folder.png")) {
-                           try {
-                               if(CurrDirStr.equals("/")) {
-                                   CurrDirStr  =  CurrDirStr + str;
-                               } else {
-                                   CurrDirStr  =  CurrDirStr + "/" + str;
-                               }
-                               setLabelTxt();
-                               padre = carpeta;
-                               carpeta = str;
-                               CurrDirName = str;
-                               CreateTiles();
-                               
-                               Proyecto2_2.selA = null;
-                               Proyecto2_2.selC = null;
-                           } catch(Exception e) {
-                               System.out.println("Error with the tile open process. " + e.getMessage());
-                           }
+                            System.out.println("Ingresando a la carpeta... " + str);
+                            try {
+                                padre = carpeta;
+                                if(carpeta.equals("/")) {
+                                    carpeta = carpeta + str;
+                                } else {
+                                    carpeta = carpeta + "/" + str;
+                                }
+                                
+                                setLabelTxt();
+                                CreateTiles();
+                                Proyecto2_2.selA = null;
+                                Proyecto2_2.selC = null;
+                            } catch(Exception e) {
+                                System.out.println("Error with the tile open process. " + e.getMessage());
+                            }
                         }
                     }
                 }

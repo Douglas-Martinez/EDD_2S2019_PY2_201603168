@@ -7,7 +7,6 @@ package proyecto2_2;
 
 import Clases.FileInfo;
 import Nodos.NodoAVL;
-import Nodos.NodoFila;
 import Nodos.NodoMatriz;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,12 +20,9 @@ import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
-import static proyecto2_2.FileExplorerFx.CurrDirName;
-import static proyecto2_2.Proyecto2_2.actual;
 import static proyecto2_2.Proyecto2_2.carpeta;
 import static proyecto2_2.Proyecto2_2.padre;
 
@@ -108,16 +104,21 @@ public class ControllerTableView implements Initializable {
         Proyecto2_2.selA = null;
         if(mouseEvent.getClickCount() == 1) {
             FileInfo lol = tableview.getSelectionModel().getSelectedItem();
+            
             if(lol != null) {
                 NodoMatriz aux;
                 if(lol.getTipo().equals("C")) {
-                    aux = Proyecto2_2.actual.matrix.buscar(carpeta, lol.getName());
+                    if(padre == null || padre.equals("/")) {
+                        aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+lol.getName());
+                    } else {
+                        aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+"/"+lol.getName());
+                    }
                     if(aux != null) {
                         Proyecto2_2.selC = aux;
-                        System.out.println("Carpeta Seleccionada: " + Proyecto2_2.selC.hijo);
+                        System.out.println("Carpeta Seleccionada: " + Proyecto2_2.selC.hijo.split("/")[Proyecto2_2.selC.hijo.split("/").length - 1]);
                     }
                 } else if(lol.getTipo().equals("A")) {
-                    if(padre == null) {
+                    if(padre == null || padre.equals("/")) {
                         aux = Proyecto2_2.actual.matrix.buscar("/", carpeta);
                     } else {
                         aux = Proyecto2_2.actual.matrix.buscar(padre, carpeta);
@@ -134,24 +135,19 @@ public class ControllerTableView implements Initializable {
         } else if(mouseEvent.getClickCount() == 2) {
             FileInfo lol = tableview.getSelectionModel().getSelectedItem();
             if(lol != null) {
-                String s;
-                String str = lol.getName();
-                s = Fx2.CurrDirStr + "/" + str;
-                System.out.println(s);
                 if(lol.getTipo().equals("C")) {
+                    System.out.println("Carpeta a abrir... " + lol.getName());
                     try{
-                        if(Fx2.CurrDirStr.equals("/")) {
-                            Fx2.CurrDirStr = Fx2.CurrDirStr + str;
+                        padre = carpeta;
+                        if(carpeta.equals("/")) {
+                            carpeta = carpeta + lol.getName();
                         } else {
-                            Fx2.CurrDirStr = Fx2.CurrDirStr + "/" + str;
+                            carpeta = carpeta + "/" + lol.getName();
                         }
                         Fx2.setLabelTxt();
-                        padre = carpeta;
-                        carpeta = lol.getName();
-                        CurrDirName = lol.getName();
+                        
                         tableview.getItems().clear();
                         Fx2.CreateTableView();
-                        
                         Proyecto2_2.selA = null;
                         Proyecto2_2.selC = null;
                     } catch(Exception e) {  
