@@ -7,11 +7,12 @@ package proyecto2_2;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -25,22 +26,27 @@ public class ImageController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    @FXML private static ImageView imgView;
+    @FXML private ScrollPane imgViewPanel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             //imgView.setId("");
-            Desktop d = Desktop.getDesktop();
-            File f = new File("src/"+Proyecto2_2.img);
-            d.open(f);
-            imgView.setId(null);
-            imgView.setImage(null);
-            imgView.setImage(new Image(ClassLoader.getSystemResourceAsStream(Proyecto2_2.img)));
-            //imgView.setImage(new Image(Proyecto2_2.img));
+//            Desktop d = Desktop.getDesktop();
+//            File f = new File("./"+Proyecto2_2.img);
+//            d.open(f);
+            Runtime.getRuntime().exec("javaws -clearcache");
+            Image ni = new Image("Reportes/log.png",true);
+            ImageView m = new ImageView(ni);
+            m.setCache(true);
+
+            imgViewPanel.setContent(m);
             Proyecto2_2.contIm++;
         } catch(Exception e) {
             System.out.println("Error al iniciar la imagen " + e.getMessage());
+            System.out.println("->" + e);
+            System.out.println("-->" + e.toString());
+            e.printStackTrace();
         }
     }
 }

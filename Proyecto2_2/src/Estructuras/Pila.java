@@ -9,7 +9,6 @@ import Nodos.NodoPila;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import proyecto2_2.Proyecto2_2;
 
 /**
  *
@@ -90,6 +89,7 @@ public class Pila {
             escribir.println("}");
             escribir.close();
             Runtime.getRuntime().exec("dot src/Reportes/log.dot -o src/Reportes/log.png -Tpng");
+            //Runtime.getRuntime().exec("dot src/log.dot -o src/log.png -Tpng");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }

@@ -10,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.LinkedList;
-import proyecto2_2.Proyecto2_2;
 
 /**
  *
@@ -143,10 +142,17 @@ public class AVL {
        return actual;
    }
    
-   public void eliminar(String n) {
+   public boolean eliminar(String n) {
+       int t1 = this.tam;
        this.root = eliminar(this.root, n);
-       this.tam--;
+       int t2 = this.tam;
        linealizar();
+       if(t1 != t2) {
+           this.tam--;
+           return true;
+       } else {
+           return false;
+       }
    }
    
    public NodoAVL buscar(String n) {
@@ -199,6 +205,7 @@ public class AVL {
                  NodoAVL temp = minNodo(root.right);
                  root.nombre = temp.nombre;
                  root.right = eliminar(root.right, temp.nombre);
+                 this.tam --;
             }
         }
 

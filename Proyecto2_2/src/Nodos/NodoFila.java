@@ -11,13 +11,10 @@ package Nodos;
  */
 public class NodoFila {
     public String nombre;
-    public String padre;
-    public String ruta;
     public NodoFila sig;
     public NodoMatriz der;
 
     public NodoFila() {
-        this.padre = "";
         this.nombre = "";
         this.sig = null;
         this.der = null;
@@ -25,14 +22,6 @@ public class NodoFila {
 
     public NodoFila(String nombre) {
         this.nombre = nombre;
-        this.padre = "";
-        this.sig = null;
-        this.der = null;
-    }
-    
-    public NodoFila(String nombre, String padre) {
-        this.nombre = nombre;
-        this.padre = padre;
         this.sig = null;
         this.der = null;
     }

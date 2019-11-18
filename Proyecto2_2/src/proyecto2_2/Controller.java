@@ -265,7 +265,7 @@ public class Controller implements Initializable {
                     }
                     n.getDialogPane().getButtonTypes().add(ButtonType.OK);
                     n.showAndWait();
-                    Proyecto2_2.log.Push("Carga masiva de usuarios.=" + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
+                    Proyecto2_2.log.Push("Carga masiva de usuarios. " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
                 } catch(Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -287,7 +287,7 @@ public class Controller implements Initializable {
             stgo.setResizable(false);
             stgo.setTitle("Reportes");
             stgo.setScene(new Scene(root));
-            stgo.show();
+            stgo.showAndWait();
         } catch(Exception e) {
             System.out.println("Error al ccargar ventana de reportes");
         }
@@ -353,14 +353,53 @@ public class Controller implements Initializable {
         }
     }
     
+    //Falta LOG
     @FXML
     private void ModificarC(MouseEvent evt) {
+        if(Proyecto2_2.selC != null) {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Problema Sad");
+            a.setHeaderText("Te lo debo carnalito ¨:(");
+            a.setContentText("No me salio el modificar");
+            a.showAndWait();
+            
+            
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Carpeta Ivalida");
+            a.setHeaderText("No se ha seleccionado ninguna carpeta");
+            a.setContentText("Selecciona una carpeta y prueba de nuevo");
+            a.showAndWait();
+        }
         Proyecto2_2.selC = null;
         Proyecto2_2.selA = null;
     }
     
+    //Falta LOG
     @FXML
     private void EliminarC(MouseEvent evt) {
+        if(Proyecto2_2.selC != null) {
+            String n = Proyecto2_2.selC.hijo;
+            NodoMatriz el = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.selC.hijo);
+            if(el != null) {
+                Proyecto2_2.actual.matrix.eliminar(Proyecto2_2.carpeta, Proyecto2_2.selC.hijo);
+                Proyecto2_2.log.Push("Borrado de la carpeta " + n + " y todos su contenido (subcarpetas y archivos)", Proyecto2_2.actual.usuario);
+                Fx1.CreateTreeView(treeview);
+                Fx2.tableview.getItems().clear();
+                Fx2.CreateTableView();
+                if(Fx3 != null) {
+                    Fx3.CreateTiles();
+                }
+            } else {
+                System.out.println("Ocurrio un problema al eliminar la carpeta. NO se encontro " + Proyecto2_2.selC.hijo);
+            }
+        } else {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setTitle("Carpeta Ivalida");
+            a.setHeaderText("No se ha seleccionado ninguna carpeta");
+            a.setContentText("Selecciona una carpeta y prueba de nuevo");
+            a.showAndWait();
+        }
         Proyecto2_2.selC = null;
         Proyecto2_2.selA = null;
     }
@@ -527,7 +566,7 @@ public class Controller implements Initializable {
                             a.setTitle("Sobreescirutra");
                             a.setContentText("Contenido del archivo " + sob.nombre + " sobreescrito");
                             a.showAndWait();
-                            Proyecto2_2.log.Push("Sobreescritura del Archivo: " + sob.nombre, Proyecto2_2.actual.usuario);
+                            Proyecto2_2.log.Push("Sobreescritura del archivo por modificacion: " + sob.nombre, Proyecto2_2.actual.usuario);
                         }
                     }
                 } else {
@@ -553,7 +592,7 @@ public class Controller implements Initializable {
             a.showAndWait();
         }
         Proyecto2_2.selC = null;
-        selA = null;
+        Proyecto2_2.selA = null;
     }
     
     @FXML
@@ -561,18 +600,24 @@ public class Controller implements Initializable {
         if(Proyecto2_2.selA != null) {
             String n = selA.nombre;
             NodoMatriz nm = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.selA.padre, Proyecto2_2.selA.hijo);
-            nm.archivos.eliminar(Proyecto2_2.selA.nombre);
-            
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setTitle("Operacion Exitosa");
-            a.setHeaderText("Archivo eliminado con exito");
-            a.showAndWait();
-            Proyecto2_2.log.Push("Elimino el archivo: " + n, Proyecto2_2.actual.usuario);
-            
-            Fx2.tableview.getItems().clear();
-            Fx2.CreateTableView();
-            if(Fx3 != null) {
-                Fx3.CreateTiles();
+            boolean si = nm.archivos.eliminar(Proyecto2_2.selA.nombre);
+            if(si) {
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setTitle("Operacion Exitosa");
+                a.setHeaderText("Archivo eliminado con exito");
+                a.showAndWait();
+                Proyecto2_2.log.Push("Elimino el archivo: " + n, Proyecto2_2.actual.usuario);
+
+                Fx2.tableview.getItems().clear();
+                Fx2.CreateTableView();
+                if(Fx3 != null) {
+                    Fx3.CreateTiles();
+                }
+            } else {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setTitle("Error");
+                a.setHeaderText("Archivo no se pudo eliminar");
+                a.showAndWait();
             }
         } else {
             Alert a = new Alert(Alert.AlertType.WARNING);
@@ -711,18 +756,18 @@ public class Controller implements Initializable {
                              a.setTitle("Operacion Exitosa");
                              a.setHeaderText("Archivo compartido con exito");
                              a.showAndWait();
-                             Proyecto2_2.log.Push("Archivo " + selA.nombre + " la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
+                             Proyecto2_2.log.Push("Archivo " + selA.nombre + " compartido a la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
                         } else {
                             NodoAVL sob = temp.matrix.buscar("/", "/").archivos.buscar(selA.nombre);
                             if(sob != null) {
                                 sob.contenido = selA.contenido;
                                 Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setTitle("Sobre escirutra");
+                                a.setTitle("Sobre escritura");
                                 a.setHeaderText("Archivo Ya Existe");
                                 a.setContentText("Contenido del archivo " + sob.nombre + " sobre escrito en la carpeta / del usuario: " + temp.usuario);
                                 a.showAndWait();
                                 Proyecto2_2.log.Push("Contenido del arcvhivo " + selA.nombre + " sobre escrito en la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
-                                Proyecto2_2.log.Push("Archivo " + selA.nombre + " la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
+                                Proyecto2_2.log.Push("Archivo " + selA.nombre + " compartido a la carpeta / del usuario: " + temp.usuario, Proyecto2_2.actual.usuario);
                             } else {
                                 Alert a = new Alert(Alert.AlertType.WARNING);
                                 a.setTitle("Error al compartir");

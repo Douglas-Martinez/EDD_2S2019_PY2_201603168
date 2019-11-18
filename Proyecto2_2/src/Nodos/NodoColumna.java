@@ -11,8 +11,6 @@ package Nodos;
  */
 public class NodoColumna {
     public String nombre;
-    public String padre;
-    public String ruta;
     public NodoColumna sig;
     public NodoMatriz abajo;
 
@@ -24,14 +22,6 @@ public class NodoColumna {
 
     public NodoColumna(String nombre) {
         this.nombre = nombre;
-        this.padre = nombre;
-        this.sig = null;
-        this.abajo = null;
-    }
-    
-    public NodoColumna(String nombre, String padre) {
-        this.nombre = nombre;
-        this.padre = nombre;
         this.sig = null;
         this.abajo = null;
     }

@@ -9,11 +9,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto2_2.ImageController">
    <children>
-      <ScrollPane layoutY="6.0" prefHeight="600.0" prefWidth="800.0">
-         <content>
-            <ImageView fx:id="imgView" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-            </ImageView>
-         </content>
-      </ScrollPane>
+      <ScrollPane fx:id="imgViewPanel" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" />
    </children>
 </AnchorPane>

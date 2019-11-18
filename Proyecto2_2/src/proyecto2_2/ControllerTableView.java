@@ -108,7 +108,7 @@ public class ControllerTableView implements Initializable {
             if(lol != null) {
                 NodoMatriz aux;
                 if(lol.getTipo().equals("C")) {
-                    if(padre == null || padre.equals("/")) {
+                    if(carpeta == null || carpeta.equals("/")) {
                         aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+lol.getName());
                     } else {
                         aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+"/"+lol.getName());

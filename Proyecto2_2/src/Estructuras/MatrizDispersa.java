@@ -300,6 +300,60 @@ public class MatrizDispersa {
         }
     }
     
+    public void eliminar(String p, String h) {
+        NodoFila auxF = this.padres.buscar(p);
+        if(auxF.der.hijo.equals(h)) {
+            if(auxF.der.derecha != null) {
+                auxF.der.derecha.izquierda = null;
+            }
+            auxF.der = auxF.der.derecha;
+        } else {
+            NodoMatriz auxM = auxF.der;
+            while(auxM != null) {
+                if(auxM.hijo.equals(h)) {
+                    auxM.izquierda.derecha = auxM.derecha;
+                    //Elimina NodoM
+                    break;
+                }
+                auxM = auxM.derecha;
+            }
+        }
+        
+        NodoColumna auxC = this.hijos.buscar(h);
+        eliminaHijos(h);
+        //Elimina
+        auxC.abajo = auxC.abajo.abajo;
+        //Elimina Columna
+        NodoColumna auxC2 = this.hijos.inicio;
+        while(auxC2.sig != null) {
+            if(auxC2.sig.nombre.equals(h)) {
+                auxC2.sig = auxC2.sig.sig;
+                break;
+            }
+            auxC2 = auxC2.sig;
+        }
+        //Elimina Fila
+        NodoFila auxF2 = this.padres.inicio;
+        while(auxF2.sig != null) {
+            if(auxF2.sig.nombre.equals(h)) {
+                auxF2.sig = auxF2.sig.sig;
+                break;
+            }
+            auxF2 = auxF2.sig;
+        }
+    }
+    
+    public void eliminaHijos(String ph) {
+        NodoFila auxF = this.padres.buscar(ph);
+        if(auxF.der != null) {
+            NodoMatriz auxM = auxF.der;
+            while(auxM != null) {
+                this.eliminar(auxM.padre, auxM.hijo);
+                auxM = auxM.derecha;
+            }
+        }
+    }
+    
     public int contarCarpetas(String np) {
         int cont = 0;
         NodoFila aux = this.padres.buscar(np);

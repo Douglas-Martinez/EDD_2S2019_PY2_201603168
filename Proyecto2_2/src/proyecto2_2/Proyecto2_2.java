@@ -11,13 +11,21 @@ import Estructuras.Pila;
 import Estructuras.TablaHash;
 import Nodos.NodoAVL;
 import Nodos.NodoMatriz;
+import java.awt.FlowLayout;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -55,23 +63,33 @@ public class Proyecto2_2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Codigo para crear carpetas
-        /*
-        File f = new File("Descargas");
-        boolean b = f.mkdir();
-        if(b) {
-            System.out.println(f.getName()+" creado");
-        } else {
-            System.out.println(f.getName()+" no creado");
-        }
-        f = new File("Reportes");
-        b = f.mkdir();
-        if(b) {
-            System.out.println(f.getName()+" creado");
-        } else {
-            System.out.println(f.getName()+" no creado");
-        }
-        */
+        System.out.println(System.getProperty("user.dir") + "\\src\\Reportes\\matriz.png");
+            ImageIcon imc = new ImageIcon(System.getProperty("user.dir") + "\\src\\Reportes\\matriz.png");
+            JLabel im = new JLabel(imc);
+                        
+            JFrame jf = new JFrame();
+            jf.setLayout(new FlowLayout());
+            jf.add(im);
+            jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            jf.pack();
+            jf.setVisible(true);
+        
+        
+        //Codigo para crear carpetas para el jar
+//        File f = new File("Descargas");
+//        boolean b = f.mkdir();
+//        if(b) {
+//            System.out.println(f.getName()+" creado");
+//        } else {
+//            System.out.println(f.getName()+" no creado");
+//        }
+//        f = new File("Reportes");
+//        b = f.mkdir();
+//        if(b) {
+//            System.out.println(f.getName()+" creado");
+//        } else {
+//            System.out.println(f.getName()+" no creado");
+//        }
         usuarios.insertar("Admin", "Admin");
         //actual = usuarios.buscar("Admin");
         

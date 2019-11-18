@@ -119,7 +119,7 @@ public class ClassTilesView extends FileExplorerFx{
                         String nom = noml[noml.length - 1];
                         
                         NodoMatriz aux;
-                        if(padre == null || padre.equals("/")) {
+                        if(carpeta == null || carpeta.equals("/")) {
                             aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+str);
                         } else {
                             aux = Proyecto2_2.actual.matrix.buscar(carpeta, carpeta+"/"+str);
