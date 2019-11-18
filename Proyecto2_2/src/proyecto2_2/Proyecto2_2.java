@@ -6,26 +6,17 @@
 package proyecto2_2;
 
 import Clases.Usuario;
-import Estructuras.MatrizDispersa;
 import Estructuras.Pila;
 import Estructuras.TablaHash;
 import Nodos.NodoAVL;
 import Nodos.NodoMatriz;
-import java.awt.FlowLayout;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -37,7 +28,6 @@ public class Proyecto2_2 extends Application {
     public static Pila log = new Pila();
     public static Usuario actual;
     public static String img;
-    public static int contIm = 0;
     
     //Transiciones
     public static String carpeta;
@@ -49,8 +39,8 @@ public class Proyecto2_2 extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception{
-        //FXMLLoader fxml = new FXMLLoader(getClass().getResource("Ingreso.fxml"));
-        FXMLLoader fxml = new FXMLLoader(getClass().getResource("Scene.fxml"));
+        FXMLLoader fxml = new FXMLLoader(getClass().getResource("Ingreso.fxml"));
+        //FXMLLoader fxml = new FXMLLoader(getClass().getResource("Scene.fxml"));
         Parent root = (Parent) fxml.load();
         Stage stg = new Stage(StageStyle.DECORATED);
         stg.setTitle("Ingreso");
@@ -63,53 +53,37 @@ public class Proyecto2_2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir") + "\\src\\Reportes\\matriz.png");
-            ImageIcon imc = new ImageIcon(System.getProperty("user.dir") + "\\src\\Reportes\\matriz.png");
-            JLabel im = new JLabel(imc);
-                        
-            JFrame jf = new JFrame();
-            jf.setLayout(new FlowLayout());
-            jf.add(im);
-            jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            jf.pack();
-            jf.setVisible(true);
-        
-        
         //Codigo para crear carpetas para el jar
-//        File f = new File("Descargas");
-//        boolean b = f.mkdir();
-//        if(b) {
-//            System.out.println(f.getName()+" creado");
-//        } else {
-//            System.out.println(f.getName()+" no creado");
-//        }
-//        f = new File("Reportes");
-//        b = f.mkdir();
-//        if(b) {
-//            System.out.println(f.getName()+" creado");
-//        } else {
-//            System.out.println(f.getName()+" no creado");
-//        }
-        usuarios.insertar("Admin", "Admin");
-        //actual = usuarios.buscar("Admin");
-        
+        File f = new File("Descargas");
+        boolean b = f.mkdir();
+        if(b) {
+            System.out.println(f.getName()+" creado");
+        } else {
+            System.out.println(f.getName()+" no creado");
+        }
+        f = new File("Reportes");
+        b = f.mkdir();
+        if(b) {
+            System.out.println(f.getName()+" creado");
+        } else {
+            System.out.println(f.getName()+" no creado");
+        }
+        /*
         usuarios.insertar("Lolazo", "12345678");
         usuarios.buscar("Lolazo").matrix.insertar("/", "/Proyectos");
         usuarios.buscar("Lolazo").matrix.insertar("/", "/Reportes");
         usuarios.buscar("Lolazo").matrix.insertar("/Proyectos", "/Proyectos/EDD");
         usuarios.buscar("Lolazo").matrix.insertar("/Proyectos/EDD", "/Proyectos/EDD/Semestre1");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.123","Contenido1","Lolazo");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("alv.2123","Contenido2","YOx2");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("boynas","Contenido3","Pito");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("asanfad","lol","Goku");
-        usuarios.buscar("Lolazo").matrix.buscar("/", "/").archivos.insertar("julio.txt","pack","Tu");
         
-        usuarios.insertar("Alv", "qazwsxedc");
-        usuarios.buscar("Alv").matrix.buscar("/", "/").archivos.insertar("julio.txt", "qwertyuiop", "zxcvbnm");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/Proyectos").archivos.insertar("alv.123","Contenido1","Lolazo");
+        usuarios.buscar("Lolazo").matrix.buscar("/", "/Proyectos").archivos.insertar("alv.2123","Contenido2","YOx2");
+        usuarios.buscar("Lolazo").matrix.buscar("/Proyectos", "/Proyectos/EDD").archivos.insertar("boynas","Contenido3","Pito");
+        usuarios.buscar("Lolazo").matrix.buscar("/Proyectos/EDD", "/Proyectos/EDD/Semestre1").archivos.insertar("asanfad","lol","Goku");
+        usuarios.buscar("Lolazo").matrix.buscar("/Proyectos/EDD", "/Proyectos/EDD/Semestre1").archivos.insertar("julio.txt","pack","Tu");
         
         actual = usuarios.buscar("Lolazo");
-        
-        
+        */
+        usuarios.insertar("Admin", "Admin");
         launch(args);
     }
 }

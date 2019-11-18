@@ -125,7 +125,8 @@ public class MatrizDispersa {
     public void graficar() {
         PrintWriter escribir;
         try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/matriz.dot")));
+            //escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/matriz.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("Reportes/matriz.dot")));
             escribir.println("digraph matriz {\n");
             escribir.println("\trankdir = TB;\n");
             escribir.println("\tnode[shape = rectangle];\n");
@@ -253,7 +254,8 @@ public class MatrizDispersa {
             escribir.print("\tlabel = \"Matriz de Archivos\"");
             escribir.println("}");
             escribir.close();
-            Runtime.getRuntime().exec("dot src/Reportes/matriz.dot -o src/Reportes/matriz.png -Tpng");
+            //Runtime.getRuntime().exec("dot src/Reportes/matriz.dot -o src/Reportes/matriz.png -Tpng");
+            Runtime.getRuntime().exec("dot Reportes/matriz.dot -o Reportes/matriz.png -Tpng");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
@@ -262,7 +264,8 @@ public class MatrizDispersa {
     public void graficarGrafo() {
         PrintWriter escribir;
         try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/grafo.dot")));
+            //escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/grafo.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("Reportes/grafo.dot")));
             escribir.println("digraph grafo {");
             if(padres == null) {
                 escribir.println("\t\"Grafo Vacio\"");
@@ -277,7 +280,8 @@ public class MatrizDispersa {
             escribir.println("\tlabel = \"Grafo de Carpetas\";");
             escribir.println("}");
             escribir.close();
-            Runtime.getRuntime().exec("dot src/Reportes/grafo.dot -o src/Reportes/grafo.png -Tpng -Gcharset=utf8");
+            //Runtime.getRuntime().exec("dot src/Reportes/grafo.dot -o src/Reportes/grafo.png -Tpng -Gcharset=utf8");
+            Runtime.getRuntime().exec("dot Reportes/grafo.dot -o Reportes/grafo.png -Tpng -Gcharset=utf8");
         } catch(Exception e) {
             System.out.println(e.toString());
         }
@@ -364,5 +368,39 @@ public class MatrizDispersa {
             }
         }
         return cont;
+    }
+
+    public void modificar(String p, String h, String n) {
+        NodoMatriz nm = buscar(p, h);
+        
+        AVL tmp = nm.archivos;
+        tmp.cambiarHijo(n);
+        this.insertar(p, n);
+        NodoMatriz bus = this.buscar(p, n);
+        bus.archivos = tmp;
+        
+        auxModificar(nm.hijo, n);
+        eliminar(p, h);
+    }
+    
+    private void auxModificar(String p, String p2) {
+        NodoFila auxF = this.padres.buscar(p);
+        NodoMatriz nm = auxF.der;
+        while(nm != null) {
+            String[] s = nm.hijo.split("/");
+            String name = p2 + "/" + s[s.length - 1];
+            
+            AVL tmp = nm.archivos;
+            tmp.cambiarHijo(p2);
+            this.insertar(p2, name);
+            NodoMatriz bus = this.buscar(p2, name);
+            bus.padre = p2;
+            bus.hijo = name;
+            bus.archivos = tmp;
+            
+            auxModificar(nm.hijo, name);
+            
+            nm = nm.derecha;
+        }
     }
 }

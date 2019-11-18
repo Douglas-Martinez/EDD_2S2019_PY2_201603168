@@ -265,7 +265,7 @@ public class Controller implements Initializable {
                     }
                     n.getDialogPane().getButtonTypes().add(ButtonType.OK);
                     n.showAndWait();
-                    Proyecto2_2.log.Push("Carga masiva de usuarios. " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
+                    Proyecto2_2.log.Push("Carga masiva de usuarios", Proyecto2_2.actual.usuario);
                 } catch(Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -308,7 +308,6 @@ public class Controller implements Initializable {
                     a.setTitle("Nombre vacio");
                     a.showAndWait();
                     a.setContentText("El nombre de la carpeta no puede estar vacio");
-                    Proyecto2_2.log.Push("Fallo al crear carpeta: Nobre Vacio", Proyecto2_2.actual.usuario);
                 } else {
                     NodoMatriz bus;
                     if(Proyecto2_2.carpeta.equals("/")) {
@@ -353,17 +352,53 @@ public class Controller implements Initializable {
         }
     }
     
-    //Falta LOG
     @FXML
     private void ModificarC(MouseEvent evt) {
         if(Proyecto2_2.selC != null) {
-            Alert a = new Alert(Alert.AlertType.WARNING);
-            a.setTitle("Problema Sad");
-            a.setHeaderText("Te lo debo carnalito ¨:(");
-            a.setContentText("No me salio el modificar");
-            a.showAndWait();
+            TextInputDialog d = new TextInputDialog();
+            d.setTitle("Modificar Carpeta");
+            String[] n = Proyecto2_2.selC.hijo.split("/");
+            d.setHeaderText("Se modificara la carpeta \"" + n[n.length - 1] + "\" ubicada en el directorio actual");
+            d.setContentText("Ingresa el nuevo nombre de la carpeta seleccionada");
+            d.setResizable(false);
+            Optional<String> res = d.showAndWait();
             
-            
+            if(res.isPresent()) {
+                if(!res.get().equals("")) {
+                    String nuevo;
+                    if(!Proyecto2_2.carpeta.equals("/")) {
+                        nuevo = Proyecto2_2.carpeta + "/" + res.get();
+                    } else {
+                        nuevo = Proyecto2_2.carpeta + res.get();
+                    }
+                    NodoMatriz bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+nuevo);
+                    if(bus == null) {
+                        Proyecto2_2.actual.matrix.modificar(Proyecto2_2.carpeta, Proyecto2_2.selC.hijo, nuevo);
+                    } else {
+                        String mas = "_";
+                        while(bus != null) {
+                            bus = Proyecto2_2.actual.matrix.buscar(Proyecto2_2.carpeta, Proyecto2_2.carpeta+"/"+nuevo+mas);
+                            if(bus != null) {
+                                mas += "_";
+                            }
+                        }
+                        Proyecto2_2.actual.matrix.modificar(Proyecto2_2.carpeta, Proyecto2_2.selC.hijo, nuevo+mas);
+                        Proyecto2_2.log.Push("Carpeta modificada a " + res.get()+mas, Proyecto2_2.actual.usuario);
+                    }
+                    Fx1.CreateTreeView(treeview);
+                    Fx2.tableview.getItems().clear();
+                    Fx2.CreateTableView();
+                    if(Fx3 != null) {
+                        Fx3.CreateTiles();
+                    }
+                } else {
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setTitle("Nombre vacio");
+                    a.setContentText("El nombre no puede estar vacio, prueba de nuevo con otro nombres");
+                    a.showAndWait();
+                    a.setContentText("El nombre de la carpeta no puede estar vacio");
+                }
+            }
         } else {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("Carpeta Ivalida");
@@ -375,7 +410,6 @@ public class Controller implements Initializable {
         Proyecto2_2.selA = null;
     }
     
-    //Falta LOG
     @FXML
     private void EliminarC(MouseEvent evt) {
         if(Proyecto2_2.selC != null) {
@@ -618,6 +652,11 @@ public class Controller implements Initializable {
                 a.setTitle("Error");
                 a.setHeaderText("Archivo no se pudo eliminar");
                 a.showAndWait();
+                Fx2.tableview.getItems().clear();
+                Fx2.CreateTableView();
+                if(Fx3 != null) {
+                    Fx3.CreateTiles();
+                }
             }
         } else {
             Alert a = new Alert(Alert.AlertType.WARNING);

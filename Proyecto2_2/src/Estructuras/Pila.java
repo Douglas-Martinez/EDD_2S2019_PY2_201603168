@@ -58,7 +58,8 @@ public class Pila {
     public void graficar() {
         PrintWriter escribir;
         try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/log.dot")));
+            //escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/log.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("Reportes/log.dot")));
             escribir.println("digraph pila{ ");
             escribir.println("\tnode[shape=record];\n");
             escribir.println("\tgraph[pencolor=transparent];\n");
@@ -88,8 +89,8 @@ public class Pila {
             escribir.print("\tlabel = \"Log - Bitácora\"");
             escribir.println("}");
             escribir.close();
-            Runtime.getRuntime().exec("dot src/Reportes/log.dot -o src/Reportes/log.png -Tpng");
-            //Runtime.getRuntime().exec("dot src/log.dot -o src/log.png -Tpng");
+            //Runtime.getRuntime().exec("dot src/Reportes/log.dot -o src/Reportes/log.png -Tpng");
+            Runtime.getRuntime().exec("dot Reportes/log.dot -o Reportes/log.png -Tpng");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }

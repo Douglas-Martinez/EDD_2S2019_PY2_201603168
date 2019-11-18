@@ -9,7 +9,6 @@ import Clases.Usuario;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import proyecto2_2.Proyecto2_2;
 
 /**
  *
@@ -158,7 +157,8 @@ public class TablaHash {
     public void graficar() {
         PrintWriter escribir;
         try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/tablaHash.dot")));
+            //escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/tablaHash.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("Reportes/tablaHash.dot")));
             escribir.println("digraph tablaHash{ \n");
             escribir.println("\ttbl [\n");
             escribir.println("\t\tshape=plaintext");
@@ -199,7 +199,8 @@ public class TablaHash {
             escribir.println("}");
             escribir.close();
             
-            Runtime.getRuntime().exec("dot src/Reportes/tablaHash.dot -o src/Reportes/tablaHash.png -Tpng");
+            //Runtime.getRuntime().exec("dot src/Reportes/tablaHash.dot -o src/Reportes/tablaHash.png -Tpng");
+            Runtime.getRuntime().exec("dot Reportes/tablaHash.dot -o Reportes/tablaHash.png -Tpng");
             
         } catch (Exception e) {
             System.err.println(e.toString());

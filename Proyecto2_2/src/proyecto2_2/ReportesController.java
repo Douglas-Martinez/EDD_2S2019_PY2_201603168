@@ -11,27 +11,13 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 
 /**
  * FXML Controller class
@@ -49,19 +35,26 @@ public class ReportesController implements Initializable {
     
     private void llamar() {
         try {
-//            ImageIcon imc = new ImageIcon(Proyecto2_2.img);
-//            JLabel im = new JLabel(imc);
-//            
-//            JFrame jf = new JFrame();
-//            jf.setLayout(new FlowLayout());
-//            jf.setBounds(10, 10, 3000, 2000);
-//            jf.add(im);
-//            jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//            jf.pack();
-//            jf.setVisible(true);
-//            
+            //System.out.println(System.getProperty("user.dir") + "\\src\\Reportes\\matriz.png");
+            ImageIcon imc = new ImageIcon(System.getProperty("user.dir") + Proyecto2_2.img);
+            imc.getImage().flush();
+            Icon i = new ImageIcon(imc.getImage().getScaledInstance(1100, 900, java.awt.Image.SCALE_DEFAULT));
+            JLabel im = new JLabel();
+            im.setIcon(i);
+            JFrame jf = new JFrame();
+            jf.setLayout(new FlowLayout());
+            jf.add(im);
+            jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            jf.pack();
+            jf.setVisible(true);
+            
+            
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setContentText("Ruta de la imagen: " + System.getProperty("user.dir") + Proyecto2_2.img);
+            a.showAndWait();
+            
             Desktop d = Desktop.getDesktop();
-            File f = new File(Proyecto2_2.img);
+            File f = new File(System.getProperty("user.dir") + Proyecto2_2.img);
             try {
                 d.open(f);
             } catch(Exception ex) {
@@ -70,38 +63,31 @@ public class ReportesController implements Initializable {
                 aa.setContentText(ex.getMessage());
                 aa.showAndWait();
             }
-            
-            /*
-            Image img = new Image("Reportes/log.png");
-            ImageView imgV = new ImageView(img);
-            
-            BorderPane bp = new BorderPane();
-            bp.setCenter(imgV);
-            
-            ScrollPane sp = new ScrollPane();
-            sp.setContent(bp);
-            
-            Scene sce = new Scene(sp);
-            Stage stg = new Stage();
-            stg.setScene(sce);
-            stg.showAndWait();
-            */
         } catch(Exception e) {
-            System.out.println("Error al abrir la imagen: " + Proyecto2_2.img);
-            //Alert a = new Alert(Alert.AlertType.WARNING);
-            //a.setHeaderText(no + ". Se abrira una ventana");
-            //a.setContentText(e.getMessage());
-            //a.showAndWait();
+            System.out.println("Error al abrir la imagen: " + System.getProperty("user.dir") + Proyecto2_2.img);
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Error al abrir: " + System.getProperty("user.dir") + Proyecto2_2.img);
+            a.showAndWait();
+            Desktop d = Desktop.getDesktop();
+            File f = new File(System.getProperty("user.dir") + Proyecto2_2.img);
+            try {
+                d.open(f);
+            } catch(Exception ex) {
+                Alert aa = new Alert(Alert.AlertType.WARNING);
+                aa.setHeaderText(Proyecto2_2.img);
+                aa.setContentText(ex.getMessage());
+                aa.showAndWait();
+            }
         }
     }
     
     @FXML
     private void hash(MouseEvent evt) {
         Proyecto2_2.usuarios.graficar();
-        Proyecto2_2.img = "src/Reportes/tablaHash.png";
+        //Proyecto2_2.img = "src/Reportes/tablaHash.png";
+        Proyecto2_2.img = "\\Reportes\\tablaHash.png";
         llamar();
         Proyecto2_2.log.Push("Generacion del Reporte Tabla Hash", Proyecto2_2.actual.usuario);
-        Proyecto2_2.contIm ++;
         Proyecto2_2.img = "";
     }
     
@@ -109,10 +95,10 @@ public class ReportesController implements Initializable {
     private void graph(MouseEvent evt) {
         if(Proyecto2_2.actual != null) {
             Proyecto2_2.actual.matrix.graficarGrafo();
-            Proyecto2_2.img = "src/Reportes/grafo.png";
+            //Proyecto2_2.img = "src/Reportes/grafo.png";
+            Proyecto2_2.img = "\\Reportes\\grafo.png";
             llamar();
             Proyecto2_2.log.Push("Generacion del Reporte del Grafo de Directorios", Proyecto2_2.actual.usuario);
-            Proyecto2_2.contIm ++;
             Proyecto2_2.img = "";
         } else {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -127,10 +113,9 @@ public class ReportesController implements Initializable {
         if(Proyecto2_2.actual != null) {
             Proyecto2_2.actual.matrix.graficar();
             //Proyecto2_2.img = "src/Reportes/matriz.png";
-            Proyecto2_2.img = "src/Reportes/matriz.png";
+            Proyecto2_2.img = "\\Reportes\\matriz.png";
             llamar();
             Proyecto2_2.log.Push("Generacion del Reporte de la Matriz de Directorios", Proyecto2_2.actual.usuario);
-            Proyecto2_2.contIm ++;
             Proyecto2_2.img = "";
         } else {
            Alert a = new Alert(Alert.AlertType.ERROR);
@@ -150,10 +135,10 @@ public class ReportesController implements Initializable {
                 p = Proyecto2_2.padre;
             }
             Proyecto2_2.actual.matrix.buscar(p,Proyecto2_2.carpeta).archivos.graficar();
-            Proyecto2_2.img = "src/Reportes/avl.png";
+            //Proyecto2_2.img = "src/Reportes/avl.png";
+            Proyecto2_2.img = "\\Reportes\\avl.png";
             llamar();
             Proyecto2_2.log.Push("Generacion del Reporte del Arbol de Archivos de la carpeta " + Proyecto2_2.carpeta, Proyecto2_2.actual.usuario);
-            Proyecto2_2.contIm ++;
             Proyecto2_2.img = "";
         } else {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -166,10 +151,10 @@ public class ReportesController implements Initializable {
     @FXML
     private void log(MouseEvent evt) {
         Proyecto2_2.log.graficar();
-        Proyecto2_2.img = "src/Reportes/log.png";
+        //Proyecto2_2.img = "src/Reportes/log.png";
+        Proyecto2_2.img = "\\Reportes\\log.png";
         llamar();
         Proyecto2_2.log.Push("Generacion del Reporte de la Bitacora de la Aplicacion", Proyecto2_2.actual.usuario);
-        Proyecto2_2.contIm ++;
         Proyecto2_2.img = "";
     }
 }

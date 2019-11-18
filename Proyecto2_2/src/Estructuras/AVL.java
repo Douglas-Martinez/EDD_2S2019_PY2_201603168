@@ -204,9 +204,10 @@ public class AVL {
             } else {
                  NodoAVL temp = minNodo(root.right);
                  root.nombre = temp.nombre;
+                 root.contenido = temp.contenido;
                  root.right = eliminar(root.right, temp.nombre);
-                 this.tam --;
             }
+           this.tam --;
         }
 
         if(root == null) {
@@ -237,7 +238,8 @@ public class AVL {
    public void graficar() {
        PrintWriter escribir;
        try {
-            escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/avl.dot")));
+            //escribir = new PrintWriter(new BufferedWriter(new FileWriter("src/Reportes/avl.dot")));
+            escribir = new PrintWriter(new BufferedWriter(new FileWriter("Reportes/avl.dot")));
             escribir.println("digraph avl {\n");
             escribir.println("\tgraph[splines=ortho, nodesep=0.5];\n");
             escribir.println("\tnode[shape=record, style=filled, fillcolor=seashell2];\n");
@@ -252,7 +254,8 @@ public class AVL {
             escribir.print("\tlabel = \"AVL de Archivos\"");
             escribir.println("}");
             escribir.close();
-            Runtime.getRuntime().exec("dot src/Reportes/avl.dot -o src/Reportes/avl.png -Tpng");
+            //Runtime.getRuntime().exec("dot src/Reportes/avl.dot -o src/Reportes/avl.png -Tpng");
+            Runtime.getRuntime().exec("dot Reportes/avl.dot -o Reportes/avl.png -Tpng");
        } catch(Exception e) {
            System.out.println(e.toString());
        }
@@ -285,6 +288,18 @@ public class AVL {
            System.out.print(n.nombre + " ");
            PreOrder(n.left);
            PreOrder(n.right);
+       }
+   }
+   
+   public void cambiarHijo(String n){
+       cambio(this.root,n);
+   }
+   
+   private void cambio(NodoAVL r, String n) {
+       if(r != null) {
+           cambio(r.left,n);
+           r.hijo = n;
+           cambio(r.right,n);
        }
    }
    
